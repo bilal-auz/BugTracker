@@ -1,7 +1,45 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { getAccessToken, redirectToAuthPage } from "../services/OAuthServices";
+const params = new URLSearchParams(window.location.search);
+const code = params.get("code");
 
 function Home() {
   const [isLoaded, setIsLoaded] = useState(true);
+
+  const loginHandler = async () => {
+    setIsLoaded(false);
+
+    if (
+      !code &&
+      (!localStorage.getItem("accessToken") ||
+        !localStorage.getItem("refreshToken"))
+    ) {
+      await redirectToAuthPage();
+    }
+  };
+
+  const handleCallBack = async () => {
+    setIsLoaded(false);
+
+    const data = await getAccessToken(code);
+
+    localStorage.setItem("accessToken", data.access_token);
+    localStorage.setItem("refreshToken", data.refresh_token);
+
+    const expire_date = new Date();
+    expire_date.setSeconds(expire_date.getSeconds() + data.expires_in);
+    localStorage.setItem("expires_in", expire_date);
+
+    history.push("/dashboard");
+  };
+
+  useEffect(() => {
+    const init = async () => {
+      if (code) return handleCallBack();
+    };
+
+    init();
+  }, []);
 
   return (
     <div className="container flex justify-center">
@@ -13,7 +51,7 @@ function Home() {
         <div className="mb-2">
           <button
             class="btn btn-wide btn-sm bg-[#000] text-[#fafafa] font-[mona-reg] capitalize hover:bg-s_green rounded-lg btn-md"
-            // onClick={loginHandler}
+            onClick={loginHandler}
           >
             {(!isLoaded && (
               <span className="loading loading-spinner"></span>
