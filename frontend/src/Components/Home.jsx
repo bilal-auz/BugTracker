@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { getAccessToken, redirectToAuthPage } from "../services/OAuthServices";
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
 
 function Home() {
   const [isLoaded, setIsLoaded] = useState(true);
+  const [data, setData] = useState("");
+  const history = useHistory();
 
   const loginHandler = async () => {
     setIsLoaded(false);
@@ -22,13 +25,9 @@ function Home() {
     setIsLoaded(false);
 
     const data = await getAccessToken(code);
+    setData(data.access_token);
 
-    localStorage.setItem("accessToken", data.access_token);
-    localStorage.setItem("refreshToken", data.refresh_token);
-
-    const expire_date = new Date();
-    expire_date.setSeconds(expire_date.getSeconds() + data.expires_in);
-    localStorage.setItem("expires_in", expire_date);
+    localStorage.setItem("access_token", data.access_token);
 
     history.push("/dashboard");
   };
@@ -48,6 +47,7 @@ function Home() {
           Bug Tracker
           <img className="w-8" src="assets/icons/statify-logo.svg" alt="" />
         </div>
+        <div className="text-red-500">code: {data}</div>
         <div className="mb-2">
           <button
             class="btn btn-wide btn-sm bg-[#000] text-[#fafafa] font-[mona-reg] capitalize hover:bg-s_green rounded-lg btn-md"

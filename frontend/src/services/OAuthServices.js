@@ -22,29 +22,32 @@ export async function redirectToAuthPage() {
     params.toString();
 }
 
-// 2. get access token: /access_token
+// 2. get access token: /auth/callback
 export async function getAccessToken(code) {
-  const params = new URLSearchParams();
-  params.append("code", code);
-  params.append("client_id", process.env.REACT_APP_CLIENT_ID);
-  params.append("client_secret", process.env.REACT_APP_CLIENT_SECRET);
-
   const config = {
     headers: {
       Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
     },
   };
 
+  const body = {
+    code: code,
+    client_id: process.env.REACT_APP_CLIENT_ID,
+    client_secret: process.env.REACT_APP_CLIENT_SECRET,
+  };
+
   const { data } = await axios.post(
-    process.env.REACT_APP_OAUTH_ENDPOINT + "/access_token" + `?${params}`,
+    process.env.REACT_APP_BACKEND_ENDPOINT + "/auth/callback",
+    body,
     config
   );
+
+  // check if auth is done and JWT is returend than return data to Home.jsx and forward to dashboard
 
   /*
     {
       "access_token": "",
-      "expires_in": 28800, 8 hours
-      "refresh_token": "",
       "scope": ""
       "token_type": "Bearer",
     }
