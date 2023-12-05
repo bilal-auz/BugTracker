@@ -15,6 +15,7 @@ app.use(express.json()); //accept json data
 app.use(cors());
 
 const authRoutes = require("./routes/authRoutes");
+const reposRoutes = require("./routes/reposRoutes");
 
 app.get("/", (req, res) => {
   res.status(200);
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/repos", reposRoutes);
 
 const PORT = process.env.PORT || 8080;
 
