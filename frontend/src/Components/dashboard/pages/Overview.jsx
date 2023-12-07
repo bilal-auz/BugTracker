@@ -1,9 +1,21 @@
 import React, { useEffect, useState } from "react";
+
 import Project from "./Project";
 
 function Overview() {
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
+  const [newProjectName, setNewProjectName] = useState("");
+
+  const [repos, setRepos] = useState([
+    { name: "repo1", value: "repo1" },
+    { name: "repo2", value: "repo2" },
+  ]);
+  const [selectedRepo, setSelectedRepo] = useState("");
+
+  const addNewProject = () => {
+    console.log(newProjectName, selectedRepo);
+  };
 
   const openProject = () => {
     console.log("open project");
@@ -77,7 +89,7 @@ function Overview() {
         </div>
       </div>
 
-      <div className="bg-[#FFF] px-5 py-2 rounded border border-2">
+      <div className="bg-[#FFF] px-5 py-2 rounded border-2">
         <div className="flex flex-row justify-between mt-5 mb-3 w-full">
           <div className="w-[70%]">
             <label className="form-control ghost">
@@ -111,9 +123,9 @@ function Overview() {
 
         <div className="rounded px-3 py-1">
           <div className="flex mt-5 mb-4">
-            <a
+            <button
               className="btn bg-[#0366d6] text-[#FFF] border-none"
-              href={`${window.location.origin}/projects/new`}
+              onClick={() => document.getElementById("addProject").showModal()}
             >
               <svg
                 className="w-4"
@@ -125,7 +137,60 @@ function Overview() {
                 <path d="M24 9h-9v-9h-6v9h-9v6h9v9h6v-9h9z" fill="#FFF" />
               </svg>
               Add Project
-            </a>
+            </button>
+            <dialog id="addProject" className="modal">
+              <div className="modal-box flex flex-col justify-center items-center rounded-xl bg-[#FFF] border-2 ">
+                <h2 className="text-left w-full text-s_black font-bold">
+                  Add new Project
+                </h2>
+                <label className="form-control w-full flex flex-col mb-5">
+                  <div className="label">
+                    <span className="label-text text-s_black">
+                      Project Name
+                    </span>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Type here"
+                    value={newProjectName}
+                    className="input input-bordered w-full mb-5 input-ghost text-[#4e565e] placeholder:text-[#4e565e] bg-[#f6f8fa] border-2 border-[#dee3e8] focus:bg-transparent focus:outline-[#0366d6] focus:text-[#4e565e]"
+                    onChange={(e) => setNewProjectName(e.target.value)}
+                  />
+                  <div className="label">
+                    <span className="label-text text-s_black">
+                      Select Repository
+                    </span>
+                  </div>
+                  <select
+                    type="text"
+                    placeholder="Type here"
+                    className="select input-bordered w-full input input-ghost text-[#4e565e] placeholder:text-[#4e565e] bg-[#f6f8fa] border-2 border-[#dee3e8] focus:bg-transparent focus:outline-[#0366d6] focus:text-[#4e565e]"
+                    onChange={(e) => setSelectedRepo(e.target.value)}
+                  >
+                    {repos.map((repo) => (
+                      <option>{repo.name}</option>
+                    ))}
+                  </select>
+                </label>
+                <div className="flex">
+                  <form method="dialog" className="mr-5">
+                    <button className="btn w-20 bg-[#d6dade] text-gray-600">
+                      Cancel
+                    </button>
+                  </form>
+
+                  <button
+                    className="btn w-20 bg-[#0366d6] text-[#FFF]"
+                    onClick={addNewProject}
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+              <form method="dialog" className="modal-backdrop">
+                <button>close</button>
+              </form>
+            </dialog>
           </div>
 
           <div>
