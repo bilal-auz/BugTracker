@@ -36,12 +36,12 @@ function Dashboard() {
     <div className="h-screen w-screen overflow-hidden ">
       <div className="flex flex-row justify-center items-center ">
         {/* Menue */}
-        <div className="flex flex-row justify-start w-fit h-screen items-start">
+        <div className="flex flex-row justify-start w-fit h-screen items-start border border-2">
           <Menu />
         </div>
 
         {/* Body */}
-        <div className="body flex flex-col mx-auto w-[100%] h-screen px-8 overflow-y-scroll bg-green-200">
+        <div className="body flex flex-col mx-auto w-[100%] h-screen overflow-y-scroll bg-[#FFFFFF]">
           {activeTab == "overview" && <Overview />}
           {activeTab == "proj-name" && <Project />}
           {activeTab == "profile" && <Profile />}
