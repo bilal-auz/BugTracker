@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import Project from "./Project";
-
 function Overview() {
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
@@ -15,6 +13,11 @@ function Overview() {
 
   const addNewProject = () => {
     console.log(newProjectName, selectedRepo);
+
+    setNewProjectName("");
+    setSelectedRepo("");
+
+    document.getElementById("cancelBtn").click();
   };
 
   const openProject = () => {
@@ -165,6 +168,7 @@ function Overview() {
                     type="text"
                     placeholder="Type here"
                     className="select input-bordered w-full input input-ghost text-[#4e565e] placeholder:text-[#4e565e] bg-[#f6f8fa] border-2 border-[#dee3e8] focus:bg-transparent focus:outline-[#0366d6] focus:text-[#4e565e]"
+                    value={selectedRepo}
                     onChange={(e) => setSelectedRepo(e.target.value)}
                   >
                     {repos.map((repo) => (
@@ -174,7 +178,10 @@ function Overview() {
                 </label>
                 <div className="flex">
                   <form method="dialog" className="mr-5">
-                    <button className="btn w-20 bg-[#d6dade] text-gray-600">
+                    <button
+                      id="cancelBtn"
+                      className="btn w-20 bg-[#d6dade] text-gray-600"
+                    >
                       Cancel
                     </button>
                   </form>
