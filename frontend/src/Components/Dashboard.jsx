@@ -10,18 +10,29 @@ function Dashboard() {
   const [loading, setIsLoading] = useState(true);
   const [repos, setRepos] = useState([]);
   const [activeTab, setActiveTab] = useState("overview");
+  const [activeProject, setActiveProject] = useState("");
 
   const getUrlPath = () => {
     var currentURL = window.location.href;
 
     var urlParts = currentURL.split("/");
 
-    return urlParts[urlParts.length - 1];
+    // if (urlParts[urlParts.length - 2] == "projects") return "projects";
+
+    return urlParts;
   };
 
   useEffect(() => {
     loadRepos();
-    setActiveTab(getUrlPath());
+    const paths = getUrlPath();
+
+    if (paths[paths.length - 2] == "projects") {
+      setActiveTab(paths[paths.length - 2]);
+      setActiveProject(paths[paths.length - 1]);
+    } else {
+      setActiveTab(paths[paths.length - 1]);
+      setActiveProject("");
+    }
   }, []);
 
   const loadRepos = async () => {
@@ -37,12 +48,12 @@ function Dashboard() {
       <div className="flex flex-row justify-center items-center ">
         {/* Menue */}
         <div className="flex flex-row justify-start w-fit h-screen items-start border border-2">
-          <Menu />
+          <Menu activeTab={activeTab} activeProjec={activeProject} />
         </div>
 
         {/* Body */}
         <div className="body flex flex-col mx-auto w-[100%] h-screen overflow-y-scroll bg-[#FFFFFF]">
-          {activeTab == "overview" && <Overview />}
+          {activeTab == "dashboard" && <Overview />}
           {activeTab == "proj-name" && <Project />}
           {activeTab == "profile" && <Profile />}
         </div>

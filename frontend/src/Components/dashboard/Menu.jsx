@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-function Menu() {
+function Menu({ activeTab, activeProject }) {
+  // const [activeTab, setActiveTab] = useState("");
+
+  useEffect(() => {
+    console.log("activeTab: ", activeTab);
+  }, []);
   return (
     <div className="flex flex-col justify-between items-start w-[15rem] h-full">
       <div className="flex flex-col justify-around items-start w-full h-full py-5">
@@ -13,10 +18,16 @@ function Menu() {
         </div>
         <div className="w-full">
           <ul className="menu px-5">
-            <li className="flex flex-row items-center text-s_black">
+            <li
+              className={
+                "flex flex-row items-center text-s_black rounded" +
+                (activeTab == "dashboard" ? " bg-gray-200" : "")
+              }
+              // onClick={() => setActiveTab("overview")}
+            >
               <a
                 className="text-base w-full"
-                href={`${window.location.origin}/dashboard/overview`}
+                href={`${window.location.origin}/dashboard`}
               >
                 <svg
                   className="w-5 h-5"
@@ -36,70 +47,82 @@ function Menu() {
               </a>
             </li>
 
-            <li className=" text-s_black">
-              <summary className="text-base">
-                <svg
-                  className="w-5 h-5"
-                  clip-rule="evenodd"
-                  fill-rule="evenodd"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="2"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="m10.5 17.25c0-.414.336-.75.75-.75h10c.414 0 .75.336.75.75s-.336.75-.75.75h-10c-.414 0-.75-.336-.75-.75zm-1.5-3.55c0-.53-.47-1-1-1h-5c-.53 0-1 .47-1 1v4.3c0 .53.47 1 1 1h5c.53 0 1-.47 1-1zm-5.5.5h4v3.3h-4zm7-2.2c0-.414.336-.75.75-.75h10c.414 0 .75.336.75.75s-.336.75-.75.75h-10c-.414 0-.75-.336-.75-.75zm-1.5-6c0-.53-.47-1-1-1h-5c-.53 0-1 .47-1 1v4.3c0 .53.47 1 1 1h5c.53 0 1-.47 1-1zm-5.5.5h4v3.3h-4zm7 .25c0-.414.336-.75.75-.75h10c.414 0 .75.336.75.75s-.336.75-.75.75h-10c-.414 0-.75-.336-.75-.75z"
-                    fill-rule="nonzero"
-                  />
-                </svg>
-                Projects
-              </summary>
-              <ul>
-                <li>
-                  <a
-                    className="text-base"
-                    href={`${window.location.origin}/dashboard/projects/proj-name`}
+            <li
+              className={
+                "flex flex-row items-center text-s_black rounded w-full" +
+                (activeTab == "projects" ? " bg-gray-200" : "")
+              }
+            >
+              <details className="w-full" open>
+                <summary className="text-base">
+                  <svg
+                    className="w-5 h-5"
+                    clip-rule="evenodd"
+                    fill-rule="evenodd"
+                    stroke-linejoin="round"
+                    stroke-miterlimit="2"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <svg
-                      className="w-4 h-4"
-                      clip-rule="evenodd"
-                      fill-rule="evenodd"
-                      stroke-linejoin="round"
-                      stroke-miterlimit="2"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
+                    <path
+                      d="m10.5 17.25c0-.414.336-.75.75-.75h10c.414 0 .75.336.75.75s-.336.75-.75.75h-10c-.414 0-.75-.336-.75-.75zm-1.5-3.55c0-.53-.47-1-1-1h-5c-.53 0-1 .47-1 1v4.3c0 .53.47 1 1 1h5c.53 0 1-.47 1-1zm-5.5.5h4v3.3h-4zm7-2.2c0-.414.336-.75.75-.75h10c.414 0 .75.336.75.75s-.336.75-.75.75h-10c-.414 0-.75-.336-.75-.75zm-1.5-6c0-.53-.47-1-1-1h-5c-.53 0-1 .47-1 1v4.3c0 .53.47 1 1 1h5c.53 0 1-.47 1-1zm-5.5.5h4v3.3h-4zm7 .25c0-.414.336-.75.75-.75h10c.414 0 .75.336.75.75s-.336.75-.75.75h-10c-.414 0-.75-.336-.75-.75z"
+                      fill-rule="nonzero"
+                    />
+                  </svg>
+                  Projects
+                </summary>
+                <ul className="">
+                  <li className="w-full">
+                    <a
+                      className="text-s_black text-base w-full"
+                      href={`${window.location.origin}/projects/proj-name`}
                     >
-                      <path d="M22 24h-20v-24h14l6 6v18zm-7-23h-12v22h18v-16h-6v-6zm1 5h4.586l-4.586-4.586v4.586z" />
-                    </svg>
-                    project 1
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="text-base"
-                    href={`${window.location.origin}/dashboard/projects/proj-name`}
-                  >
-                    <svg
-                      className="w-4 h-4"
-                      clip-rule="evenodd"
-                      fill-rule="evenodd"
-                      stroke-linejoin="round"
-                      stroke-miterlimit="2"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
+                      <svg
+                        className="w-4 h-4"
+                        clip-rule="evenodd"
+                        fill-rule="evenodd"
+                        stroke-linejoin="round"
+                        stroke-miterlimit="2"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path d="M22 24h-20v-24h14l6 6v18zm-7-23h-12v22h18v-16h-6v-6zm1 5h4.586l-4.586-4.586v4.586z" />
+                      </svg>
+                      project 1
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className="text-base w-full"
+                      href={`${window.location.origin}/projects/proj-name`}
                     >
-                      <path d="M22 24h-20v-24h14l6 6v18zm-7-23h-12v22h18v-16h-6v-6zm1 5h4.586l-4.586-4.586v4.586z" />
-                    </svg>
-                    project 2
-                  </a>
-                </li>
-              </ul>
+                      <svg
+                        className="w-4 h-4"
+                        clip-rule="evenodd"
+                        fill-rule="evenodd"
+                        stroke-linejoin="round"
+                        stroke-miterlimit="2"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path d="M22 24h-20v-24h14l6 6v18zm-7-23h-12v22h18v-16h-6v-6zm1 5h4.586l-4.586-4.586v4.586z" />
+                      </svg>
+                      project 2
+                    </a>
+                  </li>
+                </ul>
+              </details>
             </li>
 
-            <li className="text-s_black">
+            <li
+              className={
+                "flex flex-row items-center text-s_black rounded" +
+                (activeTab == "profile" ? " bg-gray-200" : "")
+              }
+            >
               <a
-                className="text-base"
-                href={`${window.location.origin}/dashboard/profile`}
+                className="text-base w-full"
+                href={`${window.location.origin}/profile`}
               >
                 <svg
                   className="w-5 h-5"
@@ -117,7 +140,7 @@ function Menu() {
             </li>
           </ul>
         </div>
-        <ul className="menu px-5">
+        <ul className="menu px-5 w-full">
           <li className="text-s_black">
             <a className="">
               <svg

@@ -9,12 +9,12 @@ import Profile from "../Components/dashboard/pages/Profile";
 function Routes() {
   return (
     <Switch>
-      <Route path="/home" exact component={Home} />
-      <Route path="/dashboard" component={Dashboard} />
+      <Route path="/" exact component={Home} />
+      <Route path="/" component={Dashboard} />
       {/* <Route path="/dashboard/overview" exact component={Overview} />
       <Route path="/dashboard/project" exact component={Project} />
       <Route path="/dashboard/profile" exact component={Profile} /> */}
-      <Redirect to="/home" />
+      <Redirect to="/" />
     </Switch>
   );
 }
