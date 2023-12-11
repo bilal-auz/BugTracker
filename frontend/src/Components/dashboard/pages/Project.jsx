@@ -79,6 +79,8 @@ function Project({ projectName }) {
   const [activeLabel, setActiveLabel] = useState("");
   const [criticalLabel, setCriticalLabel] = useState("");
   const [newTicketName, setNewTicketName] = useState("");
+  const [SelectedLabel, setSelectedLabel] = useState("");
+  const [SelectedCritical, setSelectedCritical] = useState(false);
 
   const handleSearch = (e) => {
     if (e.target.value == "") return setFilteredTickets(project.tickets);
@@ -198,7 +200,22 @@ function Project({ projectName }) {
     setFilteredTickets(project.tickets);
   };
 
-  const addNewTicket = (e) => {};
+  const addNewTicket = (e) => {
+    if (newTicketName == "") return alert("Please enter a ticket name");
+    const newTicket = {
+      ticketName: newTicketName,
+      label: SelectedLabel,
+      critical: SelectedCritical,
+    };
+
+    // call to backend to add new ticket
+
+    setSelectedLabel("");
+    setSelectedCritical(false);
+    setNewTicketName("");
+
+    document.getElementById("closeNewTicketForm").click();
+  };
 
   useEffect(() => {
     setFilteredTickets(project.tickets);
@@ -397,23 +414,45 @@ function Project({ projectName }) {
                 <div className="flex flex-row justify-around items-center">
                   <div>
                     <div className="join bg-[#FFF]">
-                      <button className="btn join-item bg-[#FFF] w-20 border-2 border-blue-300">
+                      <button
+                        className={
+                          "btn join-item bg-[#FFF] text-[#0366d6] w-20 border-2 border-gray-300 hover:bg-[#e2edfb] hover:border-gray-300 hover:scale-105 " +
+                          (SelectedLabel == "feature" &&
+                            "scale-105 bg-[#e2edfb]")
+                        }
+                        onClick={(e) => setSelectedLabel("feature")}
+                      >
                         Feature
                       </button>
-                      <button className="btn join-item bg-[#FFF] border-2 border-blue-300 w-20">
+                      <button
+                        className={
+                          "btn join-item bg-[#FFF] text-[#de9a52] border-2 border-gray-300 w-20 hover:bg-[#faf3eb] hover:border-gray-300 hover:scale-105 " +
+                          (SelectedLabel == "bug" && "scale-105 bg-[#faf3eb]")
+                        }
+                        onClick={(e) => setSelectedLabel("bug")}
+                      >
                         Bug
                       </button>
                     </div>
                   </div>
-                  <div className="flex flex-row items-center">
-                    <p className="text-s_black text-lg font-bold mr-1">
-                      Set Critical
-                    </p>
+                  <div
+                    className={
+                      "flex flex-row items-center p-2 rounded-lg border-2 transition-all duration-500 " +
+                      (SelectedCritical && "bg-[#fee8e7] scale-105")
+                    }
+                  >
                     <input
                       value="Critical"
                       type="checkbox"
-                      className="toggle toggle-sm z-0 toggle-error [--tglbg:#fff]  "
+                      className={
+                        "toggle toggle-sm z-0 toggle-error [--tglbg:#fff] mr-2"
+                      }
+                      checked={SelectedCritical}
+                      onChange={(e) => setSelectedCritical(!SelectedCritical)}
                     />
+                    <p className="text-[#d35a51] text-base font-bold mr-1">
+                      Critical
+                    </p>
                   </div>
                 </div>
               </label>
@@ -421,14 +460,14 @@ function Project({ projectName }) {
                 <form method="dialog" className="mr-5">
                   <button
                     id="cancelBtn"
-                    className="btn w-20 bg-[#d6dade] text-gray-600"
+                    className="btn w-20 bg-[#d6dade] text-gray-600 border-gray-300 border-2 hover:scale-105 hover:bg-[#d6dade]"
                   >
                     Cancel
                   </button>
                 </form>
 
                 <button
-                  className="btn w-20 bg-[#0366d6] text-[#FFF]"
+                  className="btn w-20 bg-[#0366d6] text-[#FFF] border-gray-300 border-2 hover:scale-105 hover:bg-[#0366d6]"
                   onClick={addNewTicket}
                 >
                   Add
@@ -436,7 +475,7 @@ function Project({ projectName }) {
               </div>
             </div>
             <form method="dialog" className="modal-backdrop">
-              <button>close</button>
+              <button id="closeNewTicketForm">close</button>
             </form>
           </dialog>
         </div>
@@ -487,8 +526,8 @@ function Project({ projectName }) {
             <div
               className={
                 activeLabel == "Bug" && criticalLabel == "critical"
-                  ? "badge badge-lg mr-2 bg-[#FFF] border-2 border-gray-200 text-gray-400 btn-disabled"
-                  : "badge badge-lg bg-[#FFF] text-[#0366d6] border-[#0366d6] font-bold mr-2 cursor-pointer transition-all duration-500 " +
+                  ? "badge badge-lg mr-3 bg-[#FFF] border-2 border-gray-200 text-gray-400 btn-disabled"
+                  : "badge badge-lg bg-[#FFF] text-[#0366d6] border-[#0366d6] font-bold mr-3 cursor-pointer transition-all duration-500 hover:scale-105 hover:bg-[#e2edfb] " +
                     (activeLabel === "Feature" &&
                       " bg-[#e2edfb] border-2 scale-105")
               }
@@ -508,8 +547,8 @@ function Project({ projectName }) {
               <div
                 className={
                   activeLabel === "Feature" && criticalLabel === "critical"
-                    ? "badge badge-lg bg-[#FFF] border-2 border-gray-200 text-gray-400 btn-disabled mr-2 transition-all duration-500 scale-0"
-                    : "badge badge-lg bg-[#FFF] text-[#de9a52] border-[#de9a52] font-bold badge-neutral mr-2 cursor-pointer transition-all duration-500 " +
+                    ? "badge badge-lg bg-[#FFF] border-2 border-gray-200 text-gray-400 btn-disabled mr-3 transition-all duration-500 scale-0"
+                    : "badge badge-lg bg-[#FFF] text-[#de9a52] border-[#de9a52] font-bold badge-neutral mr-3 cursor-pointer transition-all duration-500 hover:scale-105 hover:bg-[#faf3eb] " +
                       (activeLabel === "Bug" &&
                         "bg-[#faf3eb] border-2 scale-110 ") +
                       (activeLabel === "Bug" &&
@@ -653,7 +692,10 @@ function Project({ projectName }) {
                 {/* row 1 */}
                 {filteredTickets.map((ticket, index) => (
                   <tr
-                    className="text-base text-s_black border-gray-200 hover:bg-[#f6f8fa] cursor-pointer"
+                    className={
+                      "text-base text-s_black border-gray-200 hover:bg-[#f6f8fa] cursor-pointer " +
+                      (ticket.isOpened ? "" : "bg-gray-50")
+                    }
                     // onClick={openProject}
                   >
                     <th>{index + 1}</th>
