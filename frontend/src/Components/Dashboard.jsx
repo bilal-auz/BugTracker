@@ -54,7 +54,7 @@ function Dashboard() {
         {/* Body */}
         <div className="body flex flex-col mx-auto w-[100%] h-screen overflow-y-scroll bg-[#FFFFFF]">
           {activeTab == "dashboard" && <Overview />}
-          {activeTab == "proj-name" && <Project />}
+          {activeTab == "projects" && <Project projectName={activeProject} />}
           {activeTab == "profile" && <Profile />}
         </div>
       </div>

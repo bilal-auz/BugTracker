@@ -75,7 +75,7 @@ function Menu({ activeTab, activeProject }) {
                   <li className="w-full">
                     <a
                       className="text-s_black text-base w-full"
-                      href={`${window.location.origin}/projects/proj-name`}
+                      href={`${window.location.origin}/projects/proj-name1`}
                     >
                       <svg
                         className="w-4 h-4"
@@ -94,7 +94,7 @@ function Menu({ activeTab, activeProject }) {
                   <li>
                     <a
                       className="text-base w-full"
-                      href={`${window.location.origin}/projects/proj-name`}
+                      href={`${window.location.origin}/projects/proj-name2`}
                     >
                       <svg
                         className="w-4 h-4"
