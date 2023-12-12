@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 function Overview() {
+  const [userInfo, setUserInfo] = useState({ name: "John Doe" });
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [newProjectName, setNewProjectName] = useState("");
@@ -68,10 +69,15 @@ function Overview() {
   }, []);
 
   return (
-    <div className="px-8 bg-[#f6f8fa] h-full">
-      <div className="flex flex-row mt-10 rounded bg-[#f6f8fa]">
-        <div className="mr-5">
-          <svg
+    <div className="bg-[#f6f8fa] h-full px-8">
+      <div className="flex flex-col items-start mt-5 rounded bg-[#f6f8fa]">
+        <div className="mb-2">
+          <div className="flex items-start">
+            <p className="text-s_black text-base font-extrabold">
+              HI {userInfo.name},
+            </p>
+          </div>
+          {/* <svg
             className="w-24"
             clip-rule="evenodd"
             fill-rule="evenodd"
@@ -84,7 +90,7 @@ function Overview() {
               d="m10.5 17.25c0-.414.336-.75.75-.75h10c.414 0 .75.336.75.75s-.336.75-.75.75h-10c-.414 0-.75-.336-.75-.75zm-1.5-3.55c0-.53-.47-1-1-1h-5c-.53 0-1 .47-1 1v4.3c0 .53.47 1 1 1h5c.53 0 1-.47 1-1zm-5.5.5h4v3.3h-4zm7-2.2c0-.414.336-.75.75-.75h10c.414 0 .75.336.75.75s-.336.75-.75.75h-10c-.414 0-.75-.336-.75-.75zm-1.5-6c0-.53-.47-1-1-1h-5c-.53 0-1 .47-1 1v4.3c0 .53.47 1 1 1h5c.53 0 1-.47 1-1zm-5.5.5h4v3.3h-4zm7 .25c0-.414.336-.75.75-.75h10c.414 0 .75.336.75.75s-.336.75-.75.75h-10c-.414 0-.75-.336-.75-.75z"
               fill-rule="nonzero"
             />
-          </svg>
+          </svg> */}
         </div>
         <div className="flex flex-col justify-center items-start">
           <p className="text-3xl font-bold text-s_black">All Projects</p>
