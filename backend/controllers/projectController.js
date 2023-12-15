@@ -23,12 +23,12 @@ const getProjects = async (req, res) => {
 const addProject = async (req, res) => {
   try {
     const access_token = req.headers.authorization.split(" ")[1];
-    const { name, repoId } = req.body;
+    const { projectName, repoId } = req.body;
 
     const decoded = jwt.verify(access_token, process.env.JWT_SECRET);
 
     const newProject = await Project.create({
-      name,
+      name: projectName,
       owner_github_id: decoded.userId,
       repoId,
       tickets: [],
