@@ -1,4 +1,6 @@
 const axios = require("axios");
+const generateToken = require("../config/generateToken");
+const { getUser } = require("./userController");
 
 const authCallback = async (req, res) => {
   const { code, client_id, client_secret } = req.body;
@@ -26,13 +28,19 @@ const authCallback = async (req, res) => {
     config
   );
 
-  //access_token
-  //scope
-  //token_type=bearer
+  const config_user = {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${data.access_token}`,
+      "X-GitHub-Api-Version": "2022-11-28",
+    },
+  };
 
-  //JWT the access token and pass it to the frontend
+  const userData = await axios.get("https://api.github.com/user", config_user);
 
-  res.status(200).send(data);
+  const token = generateToken(data.access_token, userData.data.id);
+
+  res.status(200).send(token);
 };
 
 module.exports = { authCallback };

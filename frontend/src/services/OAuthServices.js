@@ -10,7 +10,7 @@ export async function redirectToAuthPage() {
     "redirect_uri",
     encodeURI(process.env.REACT_APP_CALLBACK_ENDPOINT)
   );
-  params.append("scope", "repo");
+  params.append("scope", "repo user");
 
   document.location.href =
     process.env.REACT_APP_OAUTH_ENDPOINT +
