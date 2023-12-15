@@ -18,6 +18,7 @@ const authRoutes = require("./routes/authRoutes");
 const reposRoutes = require("./routes/reposRoutes");
 const projectsRoutes = require("./routes/projectsRoutes");
 const userRoutes = require("./routes/userRoutes");
+const ticketsRoutes = require("./routes/ticketsRoutes");
 
 app.get("/", (req, res) => {
   res.status(200);
@@ -28,6 +29,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/repos", reposRoutes);
 app.use("/api/projects", projectsRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/tickets", ticketsRoutes);
 
 const PORT = process.env.PORT || 8080;
 
