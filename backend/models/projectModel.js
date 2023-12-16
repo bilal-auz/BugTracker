@@ -11,6 +11,8 @@ const ProjectSchema = mongoose.Schema(
         ref: "Ticket",
       },
     ],
+    bugs: { type: Number, default: 0 },
+    features: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

@@ -2,6 +2,7 @@ const axios = require("axios");
 const jwt = require("jsonwebtoken");
 
 const Project = require("../models/projectModel");
+const Ticket = require("../models/ticketModel");
 
 const getProjects = async (req, res) => {
   try {
@@ -16,6 +17,24 @@ const getProjects = async (req, res) => {
   } catch (error) {
     // const { status, message } = error;
 
+    res.status(400).send(error.message);
+  }
+};
+
+const getProject = async (req, res) => {
+  try {
+    const access_token = req.headers.authorization.split(" ")[1];
+    const { projectId } = req.params;
+    console.log(req.params);
+    const decoded = jwt.verify(access_token, process.env.JWT_SECRET);
+
+    //get projects from database
+    const project = await Project.findOne({
+      _id: projectId,
+    });
+
+    res.status(200).send(project);
+  } catch (error) {
     res.status(400).send(error.message);
   }
 };
@@ -46,4 +65,4 @@ const addProject = async (req, res) => {
   }
 };
 
-module.exports = { getProjects, addProject };
+module.exports = { getProjects, getProject, addProject };

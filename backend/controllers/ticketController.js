@@ -1,6 +1,7 @@
 const axios = require("axios");
 const jwt = require("jsonwebtoken");
 const Ticket = require("../models/ticketModel");
+const Project = require("../models/projectModel");
 
 const getTickets = async (req, res) => {
   try {
@@ -36,6 +37,10 @@ const addTickets = async (req, res) => {
     });
 
     if (newTicket) {
+      await Project.findByIdAndUpdate(projectId, {
+        $push: { tickets: newTicket._id },
+      });
+
       res.status(201).json({ newTicket });
     } else {
       res.status(400).send("Error Creating Ticket");
