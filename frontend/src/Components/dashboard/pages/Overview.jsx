@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from "react";
+import { fetchRepos } from "../../../services/RepoServices";
+import { addProject, fetchProjects } from "../../../services/projectServices";
 
 function Overview() {
   const [userInfo, setUserInfo] = useState({ name: "John Doe" });
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [newProjectName, setNewProjectName] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [repos, setRepos] = useState([
-    { name: "repo1", value: "repo1" },
-    { name: "repo2", value: "repo2" },
-  ]);
+  const [repos, setRepos] = useState(null);
   const [selectedRepo, setSelectedRepo] = useState("");
 
   const addNewProject = () => {
     console.log(newProjectName, selectedRepo);
-
+    addProject(newProjectName, selectedRepo);
     setNewProjectName("");
-    setSelectedRepo("");
+    setSelectedRepo(repos[0].id);
+
+    loadProjects();
 
     document.getElementById("cancelBtn").click();
   };
@@ -52,20 +54,31 @@ function Overview() {
     setFilteredProjects([...sortedProjects]);
   };
 
-  const loadProjects = () => {
+  const loadProjects = async () => {
     // fetch projects from backend
-    const projects = [
-      { name: "ashdkjad", bugs: 3, features: 5, createdAt: "3/11/2021" },
-      { name: "aksdad", bugs: 1, features: 8, createdAt: "3/11/2022" },
-      { name: "askndej", bugs: 5, features: 2, createdAt: "3/11/2023" },
-    ];
+    // const projects = [
+    //   { name: "ashdkjad", bugs: 3, features: 5, createdAt: "3/11/2021" },
+    //   { name: "aksdad", bugs: 1, features: 8, createdAt: "3/11/2022" },
+    //   { name: "askndej", bugs: 5, features: 2, createdAt: "3/11/2023" },
+    // ];
 
+    const projects = await fetchProjects();
     setProjects(projects);
     setFilteredProjects(projects);
   };
 
+  const loadRepos = async () => {
+    setIsLoading(true);
+    const data = await fetchRepos();
+    setRepos(data);
+    setSelectedRepo(data[0].id);
+    // console.log(data);
+    setIsLoading(false);
+  };
+
   useEffect(() => {
     loadProjects();
+    loadRepos();
   }, []);
 
   return (
@@ -133,7 +146,10 @@ function Overview() {
         <div className="rounded px-3 py-1">
           <div className="flex mt-5 mb-4">
             <button
-              className="btn bg-[#0366d6] text-[#FFF] border-none"
+              className={
+                "btn bg-[#0366d6] text-[#FFF] border-none " +
+                (isLoading && "loading")
+              }
               onClick={() => document.getElementById("addProject").showModal()}
             >
               <svg
@@ -147,63 +163,67 @@ function Overview() {
               </svg>
               Add Project
             </button>
-            <dialog id="addProject" className="modal">
-              <div className="modal-box flex flex-col justify-center items-center rounded-xl bg-[#FFF] border-2 ">
-                <h2 className="text-left w-full text-s_black font-bold">
-                  Add new Project
-                </h2>
-                <label className="form-control w-full flex flex-col mb-5">
-                  <div className="label">
-                    <span className="label-text text-s_black">
-                      Project Name
-                    </span>
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="Type here"
-                    value={newProjectName}
-                    className="input input-bordered w-full mb-5 input-ghost text-[#4e565e] placeholder:text-[#4e565e] bg-[#f6f8fa] border-2 border-[#dee3e8] focus:bg-transparent focus:outline-[#0366d6] focus:text-[#4e565e]"
-                    onChange={(e) => setNewProjectName(e.target.value)}
-                  />
-                  <div className="label">
-                    <span className="label-text text-s_black">
-                      Select Repository
-                    </span>
-                  </div>
-                  <select
-                    type="text"
-                    placeholder="Type here"
-                    className="select input-bordered w-full input input-ghost text-[#4e565e] placeholder:text-[#4e565e] bg-[#f6f8fa] border-2 border-[#dee3e8] focus:bg-transparent focus:outline-[#0366d6] focus:text-[#4e565e]"
-                    value={selectedRepo}
-                    onChange={(e) => setSelectedRepo(e.target.value)}
-                  >
-                    {repos.map((repo) => (
-                      <option>{repo.name}</option>
-                    ))}
-                  </select>
-                </label>
-                <div className="flex">
-                  <form method="dialog" className="mr-5">
-                    <button
-                      id="cancelBtn"
-                      className="btn w-20 bg-[#d6dade] text-gray-600"
+            {!isLoading && (
+              <dialog id="addProject" className="modal">
+                <div className="modal-box flex flex-col justify-center items-center rounded-xl bg-[#FFF] border-2 ">
+                  <h2 className="text-left w-full text-s_black font-bold">
+                    Add new Project
+                  </h2>
+                  <label className="form-control w-full flex flex-col mb-5">
+                    <div className="label">
+                      <span className="label-text text-s_black">
+                        Project Name
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Type here"
+                      value={newProjectName}
+                      className="input input-bordered w-full mb-5 input-ghost text-[#4e565e] placeholder:text-[#4e565e] bg-[#f6f8fa] border-2 border-[#dee3e8] focus:bg-transparent focus:outline-[#0366d6] focus:text-[#4e565e]"
+                      onChange={(e) => setNewProjectName(e.target.value)}
+                    />
+                    <div className="label">
+                      <span className="label-text text-s_black">
+                        Select Repository
+                      </span>
+                    </div>
+                    <select
+                      type="text"
+                      placeholder="Type here"
+                      className="select input-bordered w-full input input-ghost text-[#4e565e] placeholder:text-[#4e565e] bg-[#f6f8fa] border-2 border-[#dee3e8] focus:bg-transparent focus:outline-[#0366d6] focus:text-[#4e565e]"
+                      onChange={(e) => setSelectedRepo(e.target.value)}
+                      value={selectedRepo}
                     >
-                      Cancel
-                    </button>
-                  </form>
+                      {repos.map((repo) => (
+                        <option className="h-[50px]" value={repo.id}>
+                          {repo.name}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <div className="flex">
+                    <form method="dialog" className="mr-5">
+                      <button
+                        id="cancelBtn"
+                        className="btn w-20 bg-[#d6dade] text-gray-600"
+                      >
+                        Cancel
+                      </button>
+                    </form>
 
-                  <button
-                    className="btn w-20 bg-[#0366d6] text-[#FFF]"
-                    onClick={addNewProject}
-                  >
-                    Add
-                  </button>
+                    <button
+                      className="btn w-20 bg-[#0366d6] text-[#FFF]"
+                      onClick={addNewProject}
+                    >
+                      Add
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <form method="dialog" className="modal-backdrop">
-                <button>close</button>
-              </form>
-            </dialog>
+                <form method="dialog" className="modal-backdrop">
+                  <button>close</button>
+                </form>
+              </dialog>
+            )}
           </div>
 
           <div>
@@ -230,7 +250,12 @@ function Overview() {
                       <td>{project.name}</td>
                       <td>{project.bugs}</td>
                       <td>{project.features}</td>
-                      <td>{project.createdAt}</td>
+                      <td>
+                        {new Date(project.createdAt).toLocaleDateString(
+                          "en-US",
+                          { month: "long", day: "2-digit", year: "numeric" }
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

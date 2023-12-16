@@ -37,8 +37,8 @@ function Dashboard() {
 
   const loadRepos = async () => {
     setIsLoading(true);
-    // const data = await fetchRepos();
-    // setRepos(data);
+    const data = await fetchRepos();
+    setRepos(data);
     // console.log(data);
     setIsLoading(false);
   };

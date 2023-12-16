@@ -6,7 +6,7 @@ export async function fetchRepos() {
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${access_token}`,
+      authorization: `Bearer ${access_token}`,
     },
   };
 
