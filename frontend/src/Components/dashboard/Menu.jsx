@@ -1,9 +1,23 @@
 import React, { useEffect, useState } from "react";
+import { fetchProjects } from "../../services/projectServices";
 
 function Menu({ activeTab, activeProject }) {
   // const [activeTab, setActiveTab] = useState("");
 
+  const [projects, setProjects] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const getProjects = async () => {
+    setIsLoading(true);
+
+    const projects = await fetchProjects();
+
+    setProjects(projects);
+
+    setIsLoading(false);
+  };
   useEffect(() => {
+    getProjects();
     console.log("activeTab: ", activeTab);
   }, []);
   return (
@@ -95,25 +109,28 @@ function Menu({ activeTab, activeProject }) {
                     Projects
                   </summary>
                   <ul className="">
-                    <li className="w-full">
-                      <a
-                        className="text-s_black text-base w-full"
-                        href={`${window.location.origin}/projects/proj-name1`}
-                      >
-                        <svg
-                          className="w-4 h-4"
-                          clip-rule="evenodd"
-                          fill-rule="evenodd"
-                          stroke-linejoin="round"
-                          stroke-miterlimit="2"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
+                    {projects.map((project) => (
+                      <li className="w-full">
+                        <a
+                          className="text-s_black text-base w-full"
+                          href={`${window.location.origin}/projects/${project._id}`}
                         >
-                          <path d="M22 24h-20v-24h14l6 6v18zm-7-23h-12v22h18v-16h-6v-6zm1 5h4.586l-4.586-4.586v4.586z" />
-                        </svg>
-                        project 1
-                      </a>
-                    </li>
+                          <svg
+                            className="w-4 h-4"
+                            clip-rule="evenodd"
+                            fill-rule="evenodd"
+                            stroke-linejoin="round"
+                            stroke-miterlimit="2"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path d="M22 24h-20v-24h14l6 6v18zm-7-23h-12v22h18v-16h-6v-6zm1 5h4.586l-4.586-4.586v4.586z" />
+                          </svg>
+                          {project.name}
+                        </a>
+                      </li>
+                    ))}
+                    {/* 
                     <li>
                       <a
                         className="text-base w-full"
@@ -132,7 +149,7 @@ function Menu({ activeTab, activeProject }) {
                         </svg>
                         project 2
                       </a>
-                    </li>
+                    </li> */}
                   </ul>
                 </details>
               </li>
