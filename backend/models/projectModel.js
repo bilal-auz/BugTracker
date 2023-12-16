@@ -13,6 +13,8 @@ const ProjectSchema = mongoose.Schema(
     ],
     bugs: { type: Number, default: 0 },
     features: { type: Number, default: 0 },
+    openTickets: { type: Number, default: 0 },
+    closedTickets: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

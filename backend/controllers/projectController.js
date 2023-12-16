@@ -31,7 +31,29 @@ const getProject = async (req, res) => {
     //get projects from database
     const project = await Project.findOne({
       _id: projectId,
+    }).populate("tickets");
+
+    let bugs = 0;
+    let features = 0;
+    let openTickets = 0;
+
+    // calculate number of bugs and features
+    project.tickets.forEach((ticket) => {
+      if (ticket.label === "bug") {
+        bugs++;
+      } else if (ticket.label === "feature") {
+        features++;
+      }
+
+      if (ticket.status === "open") {
+        openTickets++;
+      }
     });
+
+    project.bugs = bugs;
+    project.features = features;
+    project.openTickets = openTickets;
+    project.closedTickets = project.tickets.length - openTickets;
 
     res.status(200).send(project);
   } catch (error) {
