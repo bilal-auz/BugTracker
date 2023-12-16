@@ -1,80 +1,82 @@
 import React, { useEffect, useState } from "react";
 import { fetchProject } from "../../../services/projectServices";
+import { addNewTicket } from "../../../services/TicketServices";
 
 function Project({ projectId }) {
-  const [project, setproject] = useState({
-    name: "project_name",
-    createdAt: "March 17, 2023",
-    tickets: [
-      {
-        name: "Fix_Login_Issue",
-        desc: "Users unable to log in",
-        label: "Bug",
-        critical: true,
-        isOpened: true,
-        createdAt: "October 15, 2022",
-      },
-      {
-        name: "Improve_Performance",
-        desc: "Optimize page loading times",
-        label: "Feature",
-        critical: true,
-        isOpened: false,
-        createdAt: "November 28, 2022",
-      },
-      {
-        name: "Update_UI_Design",
-        desc: "Apply new design elements",
-        label: "Feature",
-        critical: false,
-        isOpened: true,
-        createdAt: "January 5, 2023",
-      },
-      {
-        name: "Critical_Bug_Fix",
-        desc: "Resolve new critical security vulnerability",
-        label: "Bug",
-        critical: false,
-        isOpened: true,
-        createdAt: "March 10, 2023",
-      },
-      // {
-      //   name: "ti5",
-      //   desc: "fix issue on loading",
-      //   label: "Bug",
-      //   critical: true,
-      //   status: "Open",
-      //   createdAt: "March 17, 2023",
-      // },
-      // {
-      //   name: "ti6",
-      //   desc: "fix issue on loading",
-      //   label: "Bug",
-      //   critical: true,
-      //   status: "Open",
-      //   createdAt: "March 17, 2023",
-      // },
-      // {
-      //   name: "ti7",
-      //   desc: "fix issue on loading",
-      //   label: "Bug",
-      //   critical: true,
-      //   status: "Open",
-      //   createdAt: "March 17, 2023",
-      // },
-      // {
-      //   name: "ti8",
-      //   desc: "fix issue on loading",
-      //   label: "Bug",
-      //   critical: true,
-      //   status: "Open",
-      //   createdAt: "March 17, 2023",
-      // },
-    ],
-    totalTickets: 8,
-    closedTickets: 3,
-    openTickets: 5,
-  });
+  const [project, setproject] = useState();
+  //   {
+  //   name: "project_name",
+  //   createdAt: "March 17, 2023",
+  //   tickets: [
+  //     {
+  //       name: "Fix_Login_Issue",
+  //       desc: "Users unable to log in",
+  //       label: "Bug",
+  //       critical: true,
+  //       isOpened: true,
+  //       createdAt: "October 15, 2022",
+  //     },
+  //     {
+  //       name: "Improve_Performance",
+  //       desc: "Optimize page loading times",
+  //       label: "Feature",
+  //       critical: true,
+  //       isOpened: false,
+  //       createdAt: "November 28, 2022",
+  //     },
+  //     {
+  //       name: "Update_UI_Design",
+  //       desc: "Apply new design elements",
+  //       label: "Feature",
+  //       critical: false,
+  //       isOpened: true,
+  //       createdAt: "January 5, 2023",
+  //     },
+  //     {
+  //       name: "Critical_Bug_Fix",
+  //       desc: "Resolve new critical security vulnerability",
+  //       label: "Bug",
+  //       critical: false,
+  //       isOpened: true,
+  //       createdAt: "March 10, 2023",
+  //     },
+  //     // {
+  //     //   name: "ti5",
+  //     //   desc: "fix issue on loading",
+  //     //   label: "Bug",
+  //     //   critical: true,
+  //     //   status: "Open",
+  //     //   createdAt: "March 17, 2023",
+  //     // },
+  //     // {
+  //     //   name: "ti6",
+  //     //   desc: "fix issue on loading",
+  //     //   label: "Bug",
+  //     //   critical: true,
+  //     //   status: "Open",
+  //     //   createdAt: "March 17, 2023",
+  //     // },
+  //     // {
+  //     //   name: "ti7",
+  //     //   desc: "fix issue on loading",
+  //     //   label: "Bug",
+  //     //   critical: true,
+  //     //   status: "Open",
+  //     //   createdAt: "March 17, 2023",
+  //     // },
+  //     // {
+  //     //   name: "ti8",
+  //     //   desc: "fix issue on loading",
+  //     //   label: "Bug",
+  //     //   critical: true,
+  //     //   status: "Open",
+  //     //   createdAt: "March 17, 2023",
+  //     // },
+  //   ],
+  //   totalTickets: 8,
+  //   closedTickets: 3,
+  //   openTickets: 5,
+  // }
   const [activeStatus, setActiveStatus] = useState("all");
   const [filteredTickets, setFilteredTickets] = useState([]);
   const [activeLabel, setActiveLabel] = useState("");
@@ -82,13 +84,14 @@ function Project({ projectId }) {
   const [newTicketName, setNewTicketName] = useState("");
   const [SelectedLabel, setSelectedLabel] = useState("");
   const [SelectedCritical, setSelectedCritical] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSearch = (e) => {
     if (e.target.value == "") return setFilteredTickets(project.tickets);
     const filteredTickets = project.tickets.filter(
       (ticket) =>
-        ticket.name.toLowerCase().includes(e.target.value.toLowerCase()) ||
-        ticket.desc.toLowerCase().includes(e.target.value.toLowerCase())
+        ticket.title.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        ticket.description.toLowerCase().includes(e.target.value.toLowerCase())
     );
     setFilteredTickets(filteredTickets);
   };
@@ -106,15 +109,15 @@ function Project({ projectId }) {
         const dateB = new Date(b.createdAt);
 
         // Sort by createdAt date in descending order
-        if (dateA < dateB && b.isOpened) return 1;
-        if (dateA > dateB && a.isOpened) return -1;
+        if (dateA < dateB && b.status == "open") return 1;
+        if (dateA > dateB && a.status == "open") return -1;
 
         // If createdAt dates are equal, prioritize isOpened true tickets
-        return a.isOpened && !b.isOpened ? -1 : 1;
+        return a.status == "open" && b.status == "closed" ? -1 : 1;
       });
     } else if (sortType == "priority") {
       sortedTickets = filteredTickets.sort(
-        (a, b) => Number(b.critical) - Number(a.critical)
+        (a, b) => Number(b.priority) - Number(a.priority)
       );
     }
 
@@ -130,11 +133,11 @@ function Project({ projectId }) {
 
     if (status == "open") {
       filteredTickets = project.tickets.filter((ticket) => {
-        return ticket.isOpened;
+        return ticket.status == "open";
       });
     } else if (status == "closed") {
       filteredTickets = project.tickets.filter((ticket) => {
-        return !ticket.isOpened;
+        return ticket.status == "closed";
       });
     }
 
@@ -188,7 +191,7 @@ function Project({ projectId }) {
     setCriticalLabel(critical);
 
     const newFilteredTickets = filteredTickets.filter((ticket) => {
-      return ticket.critical;
+      return ticket.priority;
     });
 
     setFilteredTickets(newFilteredTickets);
@@ -201,15 +204,21 @@ function Project({ projectId }) {
     setFilteredTickets(project.tickets);
   };
 
-  const addNewTicket = (e) => {
+  const addTicket = (e) => {
     if (newTicketName == "") return alert("Please enter a ticket name");
     const newTicket = {
-      ticketName: newTicketName,
+      title: newTicketName,
+      desc: "sss",
       label: SelectedLabel,
-      critical: SelectedCritical,
+      priority: SelectedCritical,
+      status: "open",
+      projectId: project._id,
     };
 
+    console.log(newTicket);
+
     // call to backend to add new ticket
+    addNewTicket(newTicket);
 
     setSelectedLabel("");
     setSelectedCritical(false);
@@ -219,24 +228,27 @@ function Project({ projectId }) {
   };
 
   const loadProject = async () => {
+    setIsLoading(true);
     const data = await fetchProject(projectId);
 
+    console.log(data);
     setproject(data);
+    setFilteredTickets(data.tickets);
+    setIsLoading(false);
   };
 
   useEffect(() => {
     loadProject();
-    setFilteredTickets(project.tickets);
   }, []);
 
   return (
     <div className="h-full px-8 py-8 bg-[#f6f8fa] ">
       <div className="flex flex-row items-end">
         <h3 className="capitalize text-s_black font-bold mr-1">
-          {project.name}
+          {project?.name}
         </h3>
         <p className="text-base text-gray-600 font-semibold">
-          Created on {project.createdAt}
+          Created on {project?.createdAt}
         </p>
       </div>
 
@@ -277,7 +289,9 @@ function Project({ projectId }) {
                 </g>
               </svg>
             </div>
-            <div className="stat-value text-left">{project.totalTickets}</div>
+            <div className="stat-value text-left">
+              {project?.tickets.length}
+            </div>
             <div className="stat-desc text-left text-s_black font-bold">
               Total Tickets
             </div>
@@ -322,7 +336,7 @@ function Project({ projectId }) {
                 </g>
               </svg>
             </div>
-            <div className="stat-value text-left">{project.closedTickets}</div>
+            <div className="stat-value text-left">{project?.closedTickets}</div>
             <div className="stat-desc text-left text-s_black font-bold">
               Closed Tickets
             </div>
@@ -360,7 +374,7 @@ function Project({ projectId }) {
                 </g>
               </svg>
             </div>
-            <div className="stat-value text-left">{project.openTickets}</div>
+            <div className="stat-value text-left">{project?.openTickets}</div>
             <div className="stat-desc text-left text-s_black font-bold">
               Open Tickets
             </div>
@@ -370,7 +384,10 @@ function Project({ projectId }) {
         <div className="stats shadow rounded-md w-1/5 bg-[#FFF] border-2 text-s_black">
           <div className="stat">
             <div className="stat-value text-left text-s_black">
-              {(project.closedTickets / project.totalTickets) * 100} %
+              {Math.round(
+                (project?.closedTickets / project?.tickets.length) * 100
+              )}{" "}
+              %
             </div>
             <div className="stat-desc text-left text-s_black font-bold">
               Progress
@@ -378,8 +395,8 @@ function Project({ projectId }) {
             <div className="stat-desc text-left">
               <progress
                 className="progress progress-success"
-                value={project.closedTickets}
-                max={project.totalTickets}
+                value={project?.closedTickets}
+                max={project?.tickets.length}
               ></progress>
             </div>
           </div>
@@ -476,7 +493,7 @@ function Project({ projectId }) {
 
                 <button
                   className="btn w-20 bg-[#0366d6] text-[#FFF] border-gray-300 border-2 hover:scale-105 hover:bg-[#0366d6]"
-                  onClick={addNewTicket}
+                  onClick={addTicket}
                 >
                   Add
                 </button>
@@ -526,20 +543,20 @@ function Project({ projectId }) {
           <div
             className={
               "flex flex-row justify-center items-center mr-10 rounded-2xl h-fit " +
-              (activeLabel == "Feature" && criticalLabel == "critical"
+              (activeLabel == "feature" && criticalLabel == "critical"
                 ? " bg-[#e2edfb] cursor-pointer transition-all duration-500"
                 : "border-none")
             }
           >
             <div
               className={
-                activeLabel == "Bug" && criticalLabel == "critical"
+                activeLabel == "bug" && criticalLabel == "critical"
                   ? "badge badge-lg mr-3 bg-[#FFF] border-2 border-gray-200 text-gray-400 btn-disabled"
                   : "badge badge-lg bg-[#FFF] text-[#0366d6] border-[#0366d6] font-bold mr-3 cursor-pointer transition-all duration-500 hover:scale-105 hover:bg-[#e2edfb] " +
-                    (activeLabel === "Feature" &&
+                    (activeLabel === "feature" &&
                       " bg-[#e2edfb] border-2 scale-105")
               }
-              onClick={(e) => handleLabelFilter("Feature")}
+              onClick={(e) => handleLabelFilter("feature")}
             >
               Features
             </div>
@@ -547,30 +564,30 @@ function Project({ projectId }) {
             <div
               className={
                 "flex flex-row justify-center rounded-2xl " +
-                (activeLabel == "Bug" && criticalLabel == "critical"
+                (activeLabel == "bug" && criticalLabel == "critical"
                   ? " bg-[#f5d1ab] cursor-pointer transition-all duration-500"
                   : "border-none")
               }
             >
               <div
                 className={
-                  activeLabel === "Feature" && criticalLabel === "critical"
+                  activeLabel === "feature" && criticalLabel === "critical"
                     ? "badge badge-lg bg-[#FFF] border-2 border-gray-200 text-gray-400 btn-disabled mr-3 transition-all duration-500 scale-0"
                     : "badge badge-lg bg-[#FFF] text-[#de9a52] border-[#de9a52] font-bold badge-neutral mr-3 cursor-pointer transition-all duration-500 hover:scale-105 hover:bg-[#faf3eb] " +
-                      (activeLabel === "Bug" &&
+                      (activeLabel === "bug" &&
                         "bg-[#faf3eb] border-2 scale-110 ") +
-                      (activeLabel === "Bug" &&
+                      (activeLabel === "bug" &&
                         criticalLabel === "critical" &&
                         " scale-100 ")
                 }
-                onClick={() => handleLabelFilter("Bug")}
+                onClick={() => handleLabelFilter("bug")}
               >
                 Bugs
               </div>
 
               <div
                 className={
-                  (activeLabel == "Bug" || activeLabel == "Feature") &&
+                  (activeLabel == "Bug" || activeLabel == "feature") &&
                   criticalLabel == "critical"
                     ? "badge badge-lg bg-transparent text-[#d35a51] border-none font-bold badge-neutral cursor-pointer transition-color duration-500 -translate-x-2"
                     : "badge badge-lg bg-[#FFF] text-[#d35a51] border-[#d35a51] font-bold cursor-pointer hover:scale-105 hover:bg-[#fee8e7] " +
@@ -681,69 +698,76 @@ function Project({ projectId }) {
             </select>
           </label>
         </div>
-        <div className="w-full">
-          <div className="overflow-x-auto ">
-            <table className="table">
-              {/* head */}
-              <thead className="">
-                <tr className="text-xs text-gray-400 border-gray-200">
-                  <th>#</th>
-                  <th>Ticket title</th>
-                  <th>Ticket desc</th>
-                  <th>Label</th>
-                  <th>Priority</th>
-                  <th>Status</th>
-                  <th>Created at</th>
-                </tr>
-              </thead>
-              <tbody className="">
-                {/* row 1 */}
-                {filteredTickets.map((ticket, index) => (
-                  <tr
-                    className={
-                      "text-base text-s_black border-gray-200 hover:bg-[#f6f8fa] cursor-pointer " +
-                      (ticket.isOpened ? "" : "bg-gray-50")
-                    }
-                    // onClick={openProject}
-                  >
-                    <th>{index + 1}</th>
-                    <td>{ticket.name}</td>
-                    <td>{ticket.desc}</td>
-                    <td>{ticket.label}</td>
-                    <td>
-                      {ticket.critical ? (
-                        <div className="flex flex-row items-center">
-                          <svg
-                            className="w-4 mr-1"
-                            clip-rule="evenodd"
-                            fill-rule="evenodd"
-                            stroke-linejoin="round"
-                            stroke-miterlimit="2"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <circle
-                              fill="#8B0000"
-                              cx="11.998"
-                              cy="11.998"
-                              fill-rule="nonzero"
-                              r="9.998"
-                            />
-                          </svg>
-                          Critical
-                        </div>
-                      ) : (
-                        "False"
-                      )}
-                    </td>
-                    <td>{ticket.isOpened ? "Open" : "Closed"}</td>
-                    <td>{ticket.createdAt}</td>
+        {!isLoading && (
+          <div className="w-full">
+            <div className="overflow-x-auto ">
+              <table className="table">
+                {/* head */}
+                <thead className="">
+                  <tr className="text-xs text-gray-400 border-gray-200">
+                    <th>#</th>
+                    <th>Ticket title</th>
+                    <th>Ticket desc</th>
+                    <th>Label</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Created at</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="">
+                  {/* row 1 */}
+                  {filteredTickets?.map((ticket, index) => (
+                    <tr
+                      className={
+                        "text-base text-s_black border-gray-200 hover:bg-[#f6f8fa] cursor-pointer " +
+                        (ticket.isOpened ? "" : "bg-gray-50")
+                      }
+                      // onClick={openProject}
+                    >
+                      <th>{index + 1}</th>
+                      <td>{ticket.title}</td>
+                      <td>{ticket.description}</td>
+                      <td>{ticket.label}</td>
+                      <td>
+                        {ticket.priority ? (
+                          <div className="flex flex-row items-center">
+                            <svg
+                              className="w-4 mr-1"
+                              clip-rule="evenodd"
+                              fill-rule="evenodd"
+                              stroke-linejoin="round"
+                              stroke-miterlimit="2"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <circle
+                                fill="#8B0000"
+                                cx="11.998"
+                                cy="11.998"
+                                fill-rule="nonzero"
+                                r="9.998"
+                              />
+                            </svg>
+                            Critical
+                          </div>
+                        ) : (
+                          "False"
+                        )}
+                      </td>
+                      <td>{ticket.status}</td>
+                      <td>
+                        {new Date(project.createdAt).toLocaleDateString(
+                          "en-US",
+                          { month: "long", day: "2-digit", year: "numeric" }
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
