@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { fetchProject } from "../../../services/projectServices";
 
-function Project({ projectName }) {
+function Project({ projectId }) {
   const [project, setproject] = useState({
     name: "project_name",
     createdAt: "March 17, 2023",
@@ -217,7 +218,14 @@ function Project({ projectName }) {
     document.getElementById("closeNewTicketForm").click();
   };
 
+  const loadProject = async () => {
+    const data = await fetchProject(projectId);
+
+    setproject(data);
+  };
+
   useEffect(() => {
+    loadProject();
     setFilteredTickets(project.tickets);
   }, []);
 
@@ -225,7 +233,7 @@ function Project({ projectName }) {
     <div className="h-full px-8 py-8 bg-[#f6f8fa] ">
       <div className="flex flex-row items-end">
         <h3 className="capitalize text-s_black font-bold mr-1">
-          {projectName}
+          {project.name}
         </h3>
         <p className="text-base text-gray-600 font-semibold">
           Created on {project.createdAt}

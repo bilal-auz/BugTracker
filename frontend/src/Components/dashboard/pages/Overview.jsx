@@ -23,9 +23,11 @@ function Overview() {
     document.getElementById("cancelBtn").click();
   };
 
-  const openProject = () => {
+  const openProject = (projectId) => {
     console.log("open project");
     // forward to project/project_id
+
+    window.location.href = `${window.location.origin}/projects/${projectId}`;
   };
 
   const handleSearch = (e) => {
@@ -244,7 +246,7 @@ function Overview() {
                   {filteredProjects.map((project, index) => (
                     <tr
                       className="text-base text-s_black border-gray-200 hover:bg-[#f6f8fa] cursor-pointer"
-                      onClick={openProject}
+                      onClick={() => openProject(project._id)}
                     >
                       <th>{index + 1}</th>
                       <td>{project.name}</td>

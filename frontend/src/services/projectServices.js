@@ -41,3 +41,23 @@ export const addProject = async (newProjectName, selectedRepo) => {
 
   return data;
 };
+
+export const fetchProject = async (projectId) => {
+  const access_token = localStorage.getItem("access_token");
+
+  const config = {
+    headers: {
+      Accept: "application/json",
+      authorization: `Bearer ${access_token}`,
+    },
+  };
+
+  const { data } = await axios.get(
+    process.env.REACT_APP_BACKEND_ENDPOINT +
+      "/projects/getProject/" +
+      projectId,
+    config
+  );
+
+  return data;
+};
