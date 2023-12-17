@@ -45,9 +45,9 @@ function Dashboard() {
 
   return (
     <div className="h-screen w-screen overflow-hidden ">
-      <div className="flex flex-row justify-center items-center ">
+      <div className="flex flex-row h-full justify-center items-center ">
         {/* Menue */}
-        <div className="flex flex-row justify-start w-fit h-screen items-start border border-2">
+        <div className="flex flex-row justify-start w-fit h-full items-start border border-2">
           <Menu activeTab={activeTab} activeProjec={activeProject} />
         </div>
 

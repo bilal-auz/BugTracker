@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function fetchRepos() {
+export const fetchUser = async () => {
   const access_token = localStorage.getItem("access_token");
 
   const config = {
@@ -11,14 +11,14 @@ export async function fetchRepos() {
   };
 
   const { data } = await axios.get(
-    process.env.REACT_APP_BACKEND_ENDPOINT + "/repos/getRepos",
+    process.env.REACT_APP_BACKEND_ENDPOINT + "/user/getUser",
     config
   );
 
   return data;
-}
+};
 
-export async function fetchPinnedRepos() {
+export const getUserSocialMedia = async () => {
   const access_token = localStorage.getItem("access_token");
 
   const config = {
@@ -28,11 +28,12 @@ export async function fetchPinnedRepos() {
     },
   };
 
-  const { data } = await axios.post(
-    process.env.REACT_APP_BACKEND_ENDPOINT + "/repos/getPinnedRepos",
-    {},
-    config
-  );
+  //   const { data } = await axios.get(
+  //     process.env.REACT_APP_BACKEND_ENDPOINT + "/user/getUserSocialMedia",
+  //     config
+  //   );
+
+  const data = [];
 
   return data;
-}
+};

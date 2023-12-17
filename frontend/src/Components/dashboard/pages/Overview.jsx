@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { fetchRepos } from "../../../services/RepoServices";
 import { addProject, fetchProjects } from "../../../services/projectServices";
+import { fetchUser } from "../../../services/userServices";
 
 function Overview() {
-  const [userInfo, setUserInfo] = useState({ name: "John Doe" });
+  const [userInfo, setUserInfo] = useState();
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [newProjectName, setNewProjectName] = useState("");
@@ -69,6 +70,12 @@ function Overview() {
     setFilteredProjects(projects);
   };
 
+  const loadUserInfo = async () => {
+    // fetch user info from backend
+    const userInfo = await fetchUser();
+    setUserInfo(userInfo);
+  };
+
   const loadRepos = async () => {
     setIsLoading(true);
     const data = await fetchRepos();
@@ -81,6 +88,7 @@ function Overview() {
   useEffect(() => {
     loadProjects();
     loadRepos();
+    loadUserInfo();
   }, []);
 
   return (
@@ -89,7 +97,7 @@ function Overview() {
         <div className="mb-2">
           <div className="flex items-start">
             <p className="text-s_black text-base font-extrabold">
-              HI {userInfo.name},
+              HI {userInfo?.name},
             </p>
           </div>
           {/* <svg
