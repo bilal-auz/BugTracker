@@ -204,7 +204,7 @@ function Home() {
             <div className="flex flex-row justify-start items-center">
               <button
                 onClick={loginHandler}
-                className="btn btn-sm bg-[#000] text-[#fafafa] font-[mona-reg] capitalize hover:bg-s_green rounded-lg btn-md"
+                className="btn btn-sm bg-[#fff] text-[#000] font-[mona-bold] capitalize rounded-lg btn-md hover:scale-105 hover:bg-[#fff] hover:text-[#000]"
               >
                 Login
                 <svg
@@ -212,7 +212,7 @@ function Home() {
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 128 128"
                 >
-                  <g fill="#fafafa">
+                  <g fill="#000">
                     <path
                       fill-rule="evenodd"
                       clip-rule="evenodd"

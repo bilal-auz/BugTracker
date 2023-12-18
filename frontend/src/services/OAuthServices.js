@@ -52,3 +52,27 @@ export async function getAccessToken(code) {
 
   return data;
 }
+
+export async function isAuth() {
+  if (!localStorage.getItem("access_token")) return false;
+
+  try {
+    const access_token = localStorage.getItem("access_token");
+
+    const config = {
+      headers: {
+        Accept: "application/json",
+        authorization: `Bearer ${access_token}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      process.env.REACT_APP_BACKEND_ENDPOINT + "/projects/getProjects",
+      config
+    );
+
+    return true;
+  } catch (err) {
+    return false;
+  }
+}

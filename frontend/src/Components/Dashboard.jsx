@@ -4,6 +4,7 @@ import Menu from "./dashboard/Menu";
 import Overview from "./dashboard/pages/Overview";
 import Project from "./dashboard/pages/Project";
 import Profile from "./dashboard/pages/Profile";
+import { isAuth } from "../services/OAuthServices";
 var path = window.location.href.split("/")[-1];
 
 function Dashboard() {
@@ -21,8 +22,17 @@ function Dashboard() {
 
     return urlParts;
   };
+  const checkAuth = async () => {
+    const auth = await isAuth();
+    if (!auth) {
+      localStorage.clear();
+      window.location.href = "/";
+    }
+  };
 
   useEffect(() => {
+    checkAuth();
+
     loadRepos();
     const paths = getUrlPath();
 
