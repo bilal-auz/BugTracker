@@ -33,6 +33,7 @@
 
 .App {
   text-align: center;
+  font-family: 'mona-reg';
 }
 
 .App-logo {
@@ -68,4 +69,15 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.outline-stroke{
+  color: white;
+  text-shadow:
+      5px 5px 0 #000,
+    -1px -1px 0 #000,  
+    5px -1px 0 #000,
+     -1px 5px 0 #000,
+     5px 5px 0 #000;
+     font-size: 100px;
 }

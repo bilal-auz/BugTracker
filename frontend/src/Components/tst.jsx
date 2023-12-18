@@ -1,44 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
-import { getAccessToken, redirectToAuthPage } from "../services/OAuthServices";
-const params = new URLSearchParams(window.location.search);
-const code = params.get("code");
+import React, { useState } from "react";
+import Overview from "./dashboard/pages/Overview";
 
-function Home() {
+function Tst() {
   const [isLoaded, setIsLoaded] = useState(true);
-  const [data, setData] = useState("");
-  const history = useHistory();
-
-  const loginHandler = async () => {
-    setIsLoaded(false);
-
-    if (
-      !code &&
-      (!localStorage.getItem("accessToken") ||
-        !localStorage.getItem("refreshToken"))
-    ) {
-      await redirectToAuthPage();
-    }
-  };
-
-  const handleCallBack = async () => {
-    setIsLoaded(false);
-
-    const token = await getAccessToken(code);
-    setData(token);
-
-    localStorage.setItem("access_token", token);
-
-    history.push("/dashboard");
-  };
-
-  useEffect(() => {
-    const init = async () => {
-      if (code) return handleCallBack();
-    };
-
-    init();
-  }, []);
 
   return (
     <div className="w-screen overflow-y-scroll overflow-x-hidden absolute inset-0">
@@ -78,10 +42,7 @@ function Home() {
           </div>
 
           <div className="flex flex-row justify-center items-center flex-wrap">
-            <button
-              onClick={loginHandler}
-              className="btn btn-sm bg-[#000] text-[#fafafa] font-[mona-reg] capitalize hover:bg-s_green rounded-lg btn-md"
-            >
+            <button className="btn btn-sm bg-[#000] text-[#fafafa] font-[mona-reg] capitalize hover:bg-s_green rounded-lg btn-md">
               Login
               <svg
                 className="w-5"
@@ -115,7 +76,7 @@ function Home() {
               <div className="mb-2">
                 <button
                   class="btn btn-wide btn-sm bg-[#000] text-[#fafafa] font-[mona-reg] capitalize hover:bg-s_green rounded-lg btn-md"
-                  onClick={loginHandler}
+                  //   onClick={loginHandler}
                 >
                   {(!isLoaded && (
                     <span className="loading loading-spinner"></span>
@@ -154,10 +115,10 @@ function Home() {
                     </g>
                   </svg>
                   {/* <img
-          className="w-12"
-          src="assets/icons/spotify-logo-text.svg"
-          alt=""
-        /> */}
+            className="w-12"
+            src="assets/icons/spotify-logo-text.svg"
+            alt=""
+          /> */}
                 </div>
               </div>
             </div>
@@ -202,10 +163,7 @@ function Home() {
               Hunt your Bugs now!
             </p>
             <div className="flex flex-row justify-start items-center">
-              <button
-                onClick={loginHandler}
-                className="btn btn-sm bg-[#000] text-[#fafafa] font-[mona-reg] capitalize hover:bg-s_green rounded-lg btn-md"
-              >
+              <button className="btn btn-sm bg-[#000] text-[#fafafa] font-[mona-reg] capitalize hover:bg-s_green rounded-lg btn-md">
                 Login
                 <svg
                   className="w-5"
@@ -263,4 +221,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Tst;

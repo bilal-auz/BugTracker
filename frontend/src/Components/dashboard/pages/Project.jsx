@@ -248,7 +248,12 @@ function Project({ projectId }) {
           {project?.name}
         </h3>
         <p className="text-base text-gray-600 font-semibold">
-          Created on {project?.createdAt}
+          Created on{" "}
+          {new Date(project?.createdAt).toLocaleDateString("en-US", {
+            month: "long",
+            day: "2-digit",
+            year: "numeric",
+          })}
         </p>
       </div>
 
@@ -751,12 +756,12 @@ function Project({ projectId }) {
                             Critical
                           </div>
                         ) : (
-                          "False"
+                          "Mid"
                         )}
                       </td>
                       <td>{ticket.status}</td>
-                      <td>
-                        {new Date(project.createdAt).toLocaleDateString(
+                      <td className="text-sm whitespace-nowrap">
+                        {new Date(ticket.createdAt).toLocaleDateString(
                           "en-US",
                           { month: "long", day: "2-digit", year: "numeric" }
                         )}
