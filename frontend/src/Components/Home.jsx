@@ -89,7 +89,9 @@ function Home() {
                 </g>{" "}
               </g>
             </svg>
-            <h1 className="font-bold text-s_black text-3xl ml-2">Bug Watch</h1>
+            <h1 className="font-bold text-s_black text-3xl ml-2 whitespace-nowrap">
+              Bug Watch
+            </h1>
             <img className="w-8" src="assets/icons/statify-logo.svg" alt="" />
           </div>
 
