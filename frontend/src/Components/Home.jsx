@@ -211,7 +211,7 @@ function Home() {
             <div className="flex flex-col justify-end relative h-full">
               <img
                 src="assets/mockups/desktop.svg"
-                className="max-w-lg rounded-lg "
+                className="max-w-sm lg:max-w-lg rounded-lg "
               />
             </div>
           </div>
@@ -219,9 +219,9 @@ function Home() {
       </div>
 
       <div className="flex flex-col items-center justify-center w-full bg-gray-200 px-2 lg:px-0">
-        <div className="mb-10 w-[80%]">
-          <div className="bg-[#121212] rounded-md">
-            <div className="px-3 pt-5 mt-24 max-w-md xl:max-w-7xl">
+        <div className="mb-10 w-[80%] max-w-md md:max-w-7xl">
+          <div className="bg-[#121212] rounded-md w-full">
+            <div className="px-3 pt-5 mt-24 max-w-md md:max-w-7xl">
               <h1 className="font-[mona-bold] text-[#F1f1f1] text-3xl lg:text-4xl">
                 Organize your Github Repositories
               </h1>
@@ -230,7 +230,7 @@ function Home() {
                 Projects
               </p>
             </div>
-            <div className="w-full max-w-md xl:max-w-7xl items-center px-8 py-4 ">
+            <div className="w-full max-w-md md:max-w-7xl items-center px-8 py-4 ">
               <img
                 className="rounded-lg"
                 src="assets/mockups/dashboard.png"
@@ -240,22 +240,22 @@ function Home() {
           </div>
         </div>
 
-        <div className="flex flex-row justify-between pt-3 items-center w-[50%] bg-[#121212] w-[80%] max-w-md xl:max-w-7xl rounded-lg pl-10 lg:pl-14 lg:pt-8 mb-5">
-          <div className="flex flex-col w-[30%]">
-            <h1 className="text-left text-s_white whitespace-nowrap font-[mona-bold] lg:text-4xl">
+        <div className="flex flex-row justify-between pt-3 items-end md:items-center w-[50%] bg-[#121212] w-[80%] max-w-md md:max-w-7xl rounded-lg pl-5 md:pl-14 md:pt-8 mb-5">
+          <div className="flex flex-col items-start w-[50%] md:w-[30%]">
+            <h1 className="text-left text-s_white  md:whitespace-nowrap font-[mona-bold] xl:text-4xl">
               Github Profile Overview
             </h1>
             <p className="mb-2 lg:mb-0 lg:py-2 text-gray-200  text-left font-[mona-med] text-xs lg:text-xl">
               Hunt your Bugs now!
             </p>
-            <div className="flex flex-row justify-start items-center">
+            <div className="flex flex-row justify-start items-center p-5 md:p-0">
               <button
                 onClick={loginHandler}
-                className="btn btn-sm bg-[#fff] text-[#000] font-[mona-bold] capitalize rounded-lg btn-md hover:scale-105 hover:bg-[#fff] hover:text-[#000]"
+                className="btn btn-xs text-xs md:text-lg bg-[#fff] text-[#000] font-[mona-bold] capitalize rounded-lg md:btn-md hover:scale-105 hover:bg-[#fff] hover:text-[#000]"
               >
                 Login
                 <svg
-                  className="w-5"
+                  className="w-3 lg:w-5"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 128 128"
                 >
@@ -271,12 +271,13 @@ function Home() {
               </button>
             </div>
           </div>
-
-          <img
-            className="rounded-tl-lg w-[60%]"
-            src="assets/mockups/profile1.png"
-            alt=""
-          />
+          <div className="flex flex-col justify-end w-[50%] xl:w-[60%]">
+            <img
+              className="rounded-tl-lg "
+              src="assets/mockups/profile1.png"
+              alt=""
+            />
+          </div>
         </div>
       </div>
 
