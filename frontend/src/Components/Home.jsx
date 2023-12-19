@@ -44,7 +44,7 @@ function Home() {
     <div className="w-screen overflow-y-scroll overflow-x-hidden absolute inset-0">
       <div className="flex flex-col items-center justify-center bg-[#fff]">
         <div className="flex flex-row justify-between w-full max-w-md xl:max-w-7xl items-center px-8 py-4">
-          <div className="flex flex-row justtify-center items-center text-2xl font-[mona-bold]">
+          <div className="flex flex-row justtify-center items-center text-2xl font-[mona-bold] cursor-default">
             <svg
               className="w-12"
               fill="#000000"
