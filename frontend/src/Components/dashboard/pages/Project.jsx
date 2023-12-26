@@ -85,6 +85,7 @@ function Project({ projectId }) {
   const [SelectedLabel, setSelectedLabel] = useState("");
   const [SelectedCritical, setSelectedCritical] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [description, setDescription] = useState("");
 
   const handleSearch = (e) => {
     if (e.target.value == "") return setFilteredTickets(project.tickets);
@@ -208,7 +209,7 @@ function Project({ projectId }) {
     if (newTicketName == "") return alert("Please enter a ticket name");
     const newTicket = {
       title: newTicketName,
-      desc: "sss",
+      desc: description,
       label: SelectedLabel,
       priority: SelectedCritical,
       status: "open",
@@ -430,62 +431,75 @@ function Project({ projectId }) {
               <h2 className="text-left w-full text-s_black font-bold">
                 Add new Ticket
               </h2>
-              <label className="form-control w-full flex flex-col mb-5">
+              <label className="form-control w-full flex flex-col">
                 <div className="label">
                   <span className="label-text text-s_black">Ticket Name</span>
                 </div>
                 <input
                   type="text"
-                  placeholder="Type here"
+                  placeholder="Ex. Fix slow loading..."
                   value={newTicketName}
-                  className="input input-bordered w-full mb-5 input-ghost text-[#4e565e] placeholder:text-[#4e565e] bg-[#f6f8fa] border-2 border-[#dee3e8] focus:bg-transparent focus:outline-[#0366d6] focus:text-[#4e565e]"
+                  className="input input-bordered w-full mb-5 input-ghost text-[#4e565e] placeholder:text-[#4e565e] bg-[#f6f8fa] border-2 border-[#dee3e8] focus:bg-transparent focus:outline-[#0366d6] focus:text-[#4e565e] placeholder:italic"
                   onChange={(e) => setNewTicketName(e.target.value)}
                 />
-                <div className="flex flex-row justify-around items-center">
-                  <div>
-                    <div className="join bg-[#FFF]">
-                      <button
-                        className={
-                          "btn join-item bg-[#FFF] text-[#0366d6] w-20 border-2 border-gray-300 hover:bg-[#e2edfb] hover:border-gray-300 hover:scale-105 " +
-                          (SelectedLabel == "feature" &&
-                            "scale-105 bg-[#e2edfb]")
-                        }
-                        onClick={(e) => setSelectedLabel("feature")}
-                      >
-                        Feature
-                      </button>
-                      <button
-                        className={
-                          "btn join-item bg-[#FFF] text-[#de9a52] border-2 border-gray-300 w-20 hover:bg-[#faf3eb] hover:border-gray-300 hover:scale-105 " +
-                          (SelectedLabel == "bug" && "scale-105 bg-[#faf3eb]")
-                        }
-                        onClick={(e) => setSelectedLabel("bug")}
-                      >
-                        Bug
-                      </button>
-                    </div>
-                  </div>
-                  <div
-                    className={
-                      "flex flex-row items-center p-2 rounded-lg border-2 transition-all duration-500 " +
-                      (SelectedCritical && "bg-[#fee8e7] scale-105")
-                    }
-                  >
-                    <input
-                      value="Critical"
-                      type="checkbox"
+              </label>
+              <label className="form-control w-full flex flex-col mb-5">
+                <div className="label" for="description">
+                  <span className="label-text text-s_black">Description</span>
+                </div>
+                <input
+                  id="description"
+                  type="text"
+                  placeholder="Ex. Slow loading when opening..."
+                  value={description}
+                  className="input input-bordered w-full mb-5 input-ghost text-[#4e565e] placeholder:text-[#4e565e] bg-[#f6f8fa] border-2 border-[#dee3e8] focus:bg-transparent focus:outline-[#0366d6] focus:text-[#4e565e] placeholder:italic"
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </label>
+              <div className="flex flex-row justify-around items-center w-full mb-5">
+                <div>
+                  <div className="join bg-[#FFF]">
+                    <button
                       className={
-                        "toggle toggle-sm z-0 toggle-error [--tglbg:#fff] mr-2"
+                        "btn join-item bg-[#FFF] text-[#0366d6] w-20 border-2 border-gray-300 hover:bg-[#e2edfb] hover:border-gray-300 hover:scale-105 " +
+                        (SelectedLabel == "feature" && "scale-105 bg-[#e2edfb]")
                       }
-                      checked={SelectedCritical}
-                      onChange={(e) => setSelectedCritical(!SelectedCritical)}
-                    />
-                    <p className="text-[#d35a51] text-base font-bold mr-1">
-                      Critical
-                    </p>
+                      onClick={(e) => setSelectedLabel("feature")}
+                    >
+                      Feature
+                    </button>
+                    <button
+                      className={
+                        "btn join-item bg-[#FFF] text-[#de9a52] border-2 border-gray-300 w-20 hover:bg-[#faf3eb] hover:border-gray-300 hover:scale-105 " +
+                        (SelectedLabel == "bug" && "scale-105 bg-[#faf3eb]")
+                      }
+                      onClick={(e) => setSelectedLabel("bug")}
+                    >
+                      Bug
+                    </button>
                   </div>
                 </div>
-              </label>
+                <div
+                  className={
+                    "flex flex-row items-center p-2 rounded-lg border-2 transition-all duration-500 " +
+                    (SelectedCritical && "bg-[#fee8e7] scale-105")
+                  }
+                >
+                  <input
+                    value="Critical"
+                    type="checkbox"
+                    className={
+                      "toggle toggle-sm z-0 toggle-error [--tglbg:#fff] mr-2"
+                    }
+                    checked={SelectedCritical}
+                    onChange={(e) => setSelectedCritical(!SelectedCritical)}
+                  />
+                  <p className="text-[#d35a51] text-base font-bold mr-1">
+                    Critical
+                  </p>
+                </div>
+              </div>
+
               <div className="flex">
                 <form method="dialog" className="mr-5">
                   <button
