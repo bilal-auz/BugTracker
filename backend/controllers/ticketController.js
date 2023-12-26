@@ -39,6 +39,7 @@ const addTickets = async (req, res) => {
     if (newTicket) {
       await Project.findByIdAndUpdate(projectId, {
         $push: { tickets: newTicket._id },
+        $inc: { [newTicket.label === "bug" ? "bugs" : "features"]: 1 }, //increment bugs or features when adding a ticket
       });
 
       res.status(201).json({ newTicket });
