@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchRepos } from "../../../services/RepoServices";
 import { addProject, fetchProjects } from "../../../services/projectServices";
 import { fetchUser } from "../../../services/userServices";
+import { set } from "mongoose";
 
 function Overview() {
   const [userInfo, setUserInfo] = useState();
@@ -9,7 +10,8 @@ function Overview() {
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [newProjectName, setNewProjectName] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-
+  const [showEdit, setShowEdit] = useState(false);
+  const [activeProject, setActiveProject] = useState(undefined);
   const [repos, setRepos] = useState(null);
   const [selectedRepo, setSelectedRepo] = useState("");
 
@@ -83,6 +85,36 @@ function Overview() {
     setSelectedRepo(data[0].id);
     // console.log(data);
     setIsLoading(false);
+  };
+
+  const updateProjectName = (e, newName) => {
+    setNewProjectName(e.target.value);
+  };
+
+  const activateInput = (e, name, projectId) => {
+    setNewProjectName(name);
+    e.target.value = name;
+    document.getElementById(projectId + "input").focus();
+  };
+
+  const editTitle = (orignalTitle, newTitle, newTitleId) => {
+    //Only update if not empty
+    if (newTitle !== "") {
+      // update title in frontend
+      filteredProjects.find((project) => project._id == newTitleId).name =
+        newTitle;
+      // hide edit button
+    } else {
+      //if empty revert back to orignal title
+      document.getElementById(newTitleId + "input").value = orignalTitle;
+    }
+    setActiveProject("");
+
+    // hide input
+    document.getElementById(newTitleId + "input").disabled = true;
+    document.getElementById(newTitleId + "input").disabled = false;
+
+    // update title in backend
   };
 
   useEffect(() => {
@@ -254,10 +286,61 @@ function Overview() {
                   {filteredProjects.map((project, index) => (
                     <tr
                       className="text-base text-s_black border-gray-200 hover:bg-[#f6f8fa] cursor-pointer"
-                      onClick={() => openProject(project._id)}
+                      // onClick={() => openProject(project._id)}
                     >
                       <th>{index + 1}</th>
-                      <td>{project.name}</td>
+                      <td
+                        id={project._id}
+                        className="flex relative w-full"
+                        onMouseEnter={() =>
+                          // displayEditButton(index + 1 + "editBtn")
+                          setActiveProject(project._id)
+                        }
+                        onMouseLeave={() =>
+                          // hideEditButton(index + 1 + "editBtn")
+                          setActiveProject("")
+                        }
+                      >
+                        <input
+                          className="bg-transparent w-full border-b-2 border-transparent hover:border-[#e5e7eb] hover:border-b-2 focus:outline-none focus:border-[#0366d6]"
+                          id={project._id + "input"}
+                          defaultValue={project.name}
+                          disabled={false}
+                          // defaultValue={project.name}
+                          onChange={(e) => updateProjectName(e, project.name)}
+                          onClick={(e) =>
+                            activateInput(e, project.name, project._id)
+                          }
+                          onKeyUp={(e) => {
+                            e.key === "Enter" &&
+                              editTitle(
+                                project.name,
+                                newProjectName,
+                                project._id
+                              );
+                          }}
+                        />
+
+                        <div className="w-full ml-2 relative">
+                          {activeProject == project._id && (
+                            <button
+                              id={project._id + "editBtn"}
+                              className="block absolute"
+                              onClick={(e) => {
+                                editTitle(project._id + "title");
+                              }}
+                            >
+                              <svg
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-6"
+                              >
+                                <path d="m9.134 19.319 11.587-11.588c.171-.171.279-.423.279-.684 0-.229-.083-.466-.28-.662l-3.115-3.104c-.185-.185-.429-.277-.672-.277s-.486.092-.672.277l-11.606 11.566c-.569 1.763-1.555 4.823-1.626 5.081-.02.075-.029.15-.029.224 0 .461.349.848.765.848.511 0 .991-.189 5.369-1.681zm-3.27-3.342 2.137 2.137-3.168 1.046zm.955-1.166 10.114-10.079 2.335 2.327-10.099 10.101z" />
+                              </svg>
+                            </button>
+                          )}
+                        </div>
+                      </td>
                       <td>{project.bugs}</td>
                       <td>{project.features}</td>
                       <td>
