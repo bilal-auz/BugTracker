@@ -64,7 +64,7 @@ const getProject = async (req, res) => {
 const addProject = async (req, res) => {
   try {
     const access_token = req.headers.authorization.split(" ")[1];
-    const { projectName, repoId } = req.body;
+    const { projectName, repoId, repoLink } = req.body;
 
     const decoded = jwt.verify(access_token, process.env.JWT_SECRET);
 
@@ -72,6 +72,7 @@ const addProject = async (req, res) => {
       name: projectName,
       owner_github_id: decoded.userId,
       repoId,
+      repoLink,
       tickets: [],
     });
 

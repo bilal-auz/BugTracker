@@ -18,7 +18,7 @@ export const fetchProjects = async () => {
   return data;
 };
 
-export const addProject = async (newProjectName, selectedRepo) => {
+export const addProject = async (newProjectName, selectedRepo, repoLink) => {
   const access_token = localStorage.getItem("access_token");
 
   const config = {
@@ -31,6 +31,7 @@ export const addProject = async (newProjectName, selectedRepo) => {
   const body = {
     projectName: newProjectName,
     repoId: selectedRepo,
+    repoLink,
   };
 
   const { data } = await axios.post(
