@@ -100,7 +100,7 @@ export const updatedProject = async (projectId, newTitle) => {
     const body = {
       newTitle: newTitle,
     };
-    const { data } = await axios.delete(
+    const { data } = await axios.patch(
       process.env.REACT_APP_BACKEND_ENDPOINT + "/projects/" + projectId,
       body,
       config
