@@ -51,4 +51,28 @@ const addTickets = async (req, res) => {
   }
 };
 
-module.exports = { getTickets, addTickets };
+const deleteTicket = async (req, res) => {
+  try {
+    const access_token = req.headers.authorization.split(" ")[1];
+    const { ticketId } = req.params;
+
+    const decoded = jwt.verify(access_token, process.env.JWT_SECRET);
+
+    const ticket = await Ticket.findByIdAndDelete(ticketId);
+
+    if (ticket) {
+      await Project.findByIdAndUpdate(ticket.projectId, {
+        $pull: { tickets: ticketId },
+        $inc: { [ticket.label === "bug" ? "bugs" : "features"]: -1 }, //decrement bugs or features when deleting a ticket
+      });
+
+      res.status(200).send("Ticket Deleted");
+    } else {
+      res.status(400).send("Error Deleting Ticket");
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+};
+
+module.exports = { getTickets, addTickets, deleteTicket };
