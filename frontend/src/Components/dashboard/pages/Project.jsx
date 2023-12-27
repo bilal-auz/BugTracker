@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchProject } from "../../../services/projectServices";
-import { addNewTicket } from "../../../services/TicketServices";
+import { addNewTicket, deleteTicket } from "../../../services/TicketServices";
+import Dialog from "../../Reusables/Dialog";
 
 function Project({ projectId }) {
   const [project, setproject] = useState();
@@ -86,6 +87,8 @@ function Project({ projectId }) {
   const [SelectedCritical, setSelectedCritical] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [description, setDescription] = useState("");
+
+  const [newTicket, setNewTicket] = useState({});
 
   const handleSearch = (e) => {
     if (e.target.value == "") return setFilteredTickets(project.tickets);
@@ -236,6 +239,17 @@ function Project({ projectId }) {
     setproject(data);
     setFilteredTickets(data.tickets);
     setIsLoading(false);
+  };
+
+  const removeTicket = (ticketId) => {
+    const newTickets = project.tickets.filter((ticket) => {
+      return ticket._id != ticketId;
+    });
+    setproject({ ...project, tickets: newTickets });
+    setFilteredTickets(newTickets);
+
+    //delete from backend
+    deleteTicket(ticketId);
   };
 
   useEffect(() => {
@@ -719,7 +733,7 @@ function Project({ projectId }) {
         </div>
         {!isLoading && (
           <div className="w-full">
-            <div className="overflow-x-auto ">
+            <div className="overflow-x-auto overflow-y-hidden">
               <table className="table">
                 {/* head */}
                 <thead className="">
@@ -731,6 +745,7 @@ function Project({ projectId }) {
                     <th>Priority</th>
                     <th>Status</th>
                     <th>Created at</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody className="">
@@ -780,6 +795,62 @@ function Project({ projectId }) {
                           { month: "long", day: "2-digit", year: "numeric" }
                         )}
                       </td>
+                      <td>
+                        <div className="dropdown dropdown-bottom dropdown-end">
+                          <div
+                            tabIndex={0}
+                            role="button"
+                            className="btn p-0 py-0 bg-transparent border-none hover:bg-transparent"
+                          >
+                            <svg
+                              fill="#000000"
+                              version="1.1"
+                              id="Capa_1"
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 32.055 32.055"
+                              className="w-5 fill-current text-gray-400 hover:text-[#000000] transition-all duration-200"
+                            >
+                              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                              <g
+                                id="SVGRepo_tracerCarrier"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              ></g>
+                              <g id="SVGRepo_iconCarrier">
+                                {" "}
+                                <g>
+                                  {" "}
+                                  <path d="M3.968,12.061C1.775,12.061,0,13.835,0,16.027c0,2.192,1.773,3.967,3.968,3.967c2.189,0,3.966-1.772,3.966-3.967 C7.934,13.835,6.157,12.061,3.968,12.061z M16.233,12.061c-2.188,0-3.968,1.773-3.968,3.965c0,2.192,1.778,3.967,3.968,3.967 s3.97-1.772,3.97-3.967C20.201,13.835,18.423,12.061,16.233,12.061z M28.09,12.061c-2.192,0-3.969,1.774-3.969,3.967 c0,2.19,1.774,3.965,3.969,3.965c2.188,0,3.965-1.772,3.965-3.965S30.278,12.061,28.09,12.061z"></path>{" "}
+                                </g>{" "}
+                              </g>
+                            </svg>
+                          </div>
+                          <ul className="menu dropdown-content z-[1] bg-white border-2 rounded-box w-52">
+                            <li>
+                              <button
+                                onClick={() => {
+                                  document
+                                    .getElementById("editTicket" + ticket._id)
+                                    .showModal();
+                                }}
+                              >
+                                Edit
+                              </button>
+                            </li>
+                            <li>
+                              <button onClick={(e) => removeTicket(ticket._id)}>
+                                Delete
+                              </button>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                      <Dialog
+                        ticket={ticket}
+                        setproject={setproject}
+                        setFilteredTickets={setFilteredTickets}
+                        project={project}
+                      />
                     </tr>
                   ))}
                 </tbody>
