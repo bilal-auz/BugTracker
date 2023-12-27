@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const ProjectSchema = mongoose.Schema(
+const ProjectSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     owner_github_id: { type: String, required: true },

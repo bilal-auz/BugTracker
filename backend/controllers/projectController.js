@@ -88,4 +88,55 @@ const addProject = async (req, res) => {
   }
 };
 
-module.exports = { getProjects, getProject, addProject };
+const deleteProject = async (req, res) => {
+  try {
+    const access_token = req.headers.authorization.split(" ")[1];
+    const { projectId } = req.params;
+
+    const decoded = jwt.verify(access_token, process.env.JWT_SECRET);
+
+    const deletedProject = await Project.findByIdAndDelete(projectId);
+
+    if (deletedProject) {
+      res.status(201).json({ deletedProject });
+    } else {
+      res.status(400).send("Error Deleting Project");
+    }
+  } catch (error) {
+    // const { status, message } = error;
+
+    res.status(400).send(error.message);
+  }
+};
+
+const updateProject = async (req, res) => {
+  try {
+    const access_token = req.headers.authorization.split(" ")[1];
+    const { projectId } = req.params;
+    const { newTitle } = req.body;
+
+    const decoded = jwt.verify(access_token, process.env.JWT_SECRET);
+
+    const updatedProject = await Project.findByIdAndUpdate(projectId, {
+      name: newTitle,
+    });
+
+    if (updatedProject) {
+      res.status(201).json({ updatedProject });
+    } else {
+      res.status(400).send("Error Updating Project");
+    }
+  } catch (error) {
+    // const { status, message } = error;
+
+    res.status(400).send(error.message);
+  }
+};
+
+module.exports = {
+  getProjects,
+  getProject,
+  addProject,
+  deleteProject,
+  updateProject,
+};
