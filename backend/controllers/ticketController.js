@@ -75,4 +75,26 @@ const deleteTicket = async (req, res) => {
   }
 };
 
-module.exports = { getTickets, addTickets, deleteTicket };
+const updateTicket = async (req, res) => {
+  try {
+    const access_token = req.headers.authorization.split(" ")[1];
+    const { ticketId } = req.params;
+    const { updatedTicket } = req.body;
+
+    const decoded = jwt.verify(access_token, process.env.JWT_SECRET);
+
+    const ticket = await Ticket.findByIdAndUpdate(ticketId, {
+      ...updatedTicket,
+    });
+
+    if (ticket) {
+      res.status(200).send("Ticket Updated");
+    } else {
+      res.status(400).send("Error Deleting Ticket");
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+};
+
+module.exports = { getTickets, addTickets, deleteTicket, updateTicket };
