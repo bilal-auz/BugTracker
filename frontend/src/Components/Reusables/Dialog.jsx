@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { updateTicket } from "../../services/TicketServices";
 
 function Dialog({ ticket, project, setproject, setFilteredTickets }) {
   const [newTicketName, setNewTicketName] = useState(ticket.title);
@@ -29,6 +30,8 @@ function Dialog({ ticket, project, setproject, setFilteredTickets }) {
     setFilteredTickets(updatedTickets);
 
     //update in backend
+
+    updateTicket(ticket._id, newTicket);
   };
 
   return (

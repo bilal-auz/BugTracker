@@ -40,3 +40,28 @@ export const deleteTicket = async (ticketId) => {
     console.log(err);
   }
 };
+
+export const updateTicket = async (ticketId, updatedTicket) => {
+  try {
+    const access_token = localStorage.getItem("access_token");
+
+    const config = {
+      headers: {
+        Accept: "application/json",
+        authorization: `Bearer ${access_token}`,
+      },
+    };
+    const body = {
+      updatedTicket: updatedTicket,
+    };
+    const { data } = await axios.patch(
+      process.env.REACT_APP_BACKEND_ENDPOINT + "/tickets/" + ticketId,
+      body,
+      config
+    );
+
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+};
