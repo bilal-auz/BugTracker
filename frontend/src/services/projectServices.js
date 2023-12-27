@@ -62,3 +62,52 @@ export const fetchProject = async (projectId) => {
 
   return data;
 };
+
+export const deleteProject = async (projectId) => {
+  try {
+    const access_token = localStorage.getItem("access_token");
+
+    const config = {
+      headers: {
+        Accept: "application/json",
+        authorization: `Bearer ${access_token}`,
+      },
+    };
+
+    const { data } = await axios.delete(
+      process.env.REACT_APP_BACKEND_ENDPOINT +
+        "/projects/deleteProject/" +
+        projectId,
+      config
+    );
+
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const updatedProject = async (projectId, newTitle) => {
+  try {
+    const access_token = localStorage.getItem("access_token");
+
+    const config = {
+      headers: {
+        Accept: "application/json",
+        authorization: `Bearer ${access_token}`,
+      },
+    };
+    const body = {
+      newTitle: newTitle,
+    };
+    const { data } = await axios.delete(
+      process.env.REACT_APP_BACKEND_ENDPOINT + "/projects/" + projectId,
+      body,
+      config
+    );
+
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+};
