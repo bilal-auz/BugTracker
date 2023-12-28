@@ -7,7 +7,6 @@ import {
   updatedProject,
 } from "../../../services/projectServices";
 import { fetchUser } from "../../../services/userServices";
-import { set } from "mongoose";
 
 function Overview() {
   const [userInfo, setUserInfo] = useState();
