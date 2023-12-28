@@ -212,14 +212,15 @@ function Project({ projectId }) {
     if (newTicketName == "") return alert("Please enter a ticket name");
     const newTicket = {
       title: newTicketName,
-      desc: description,
+      description: description,
       label: SelectedLabel,
       priority: SelectedCritical,
       status: "open",
       projectId: project._id,
     };
 
-    console.log(newTicket);
+    setproject({ ...project, tickets: [...project.tickets, newTicket] });
+    setFilteredTickets([newTicket, ...project.tickets]);
 
     // call to backend to add new ticket
     addNewTicket(newTicket);
@@ -830,8 +831,8 @@ function Project({ projectId }) {
                           className={
                             "dropdown " +
                             (index == filteredTickets.length - 1
-                              ? "dropdown-top dropdown-end"
-                              : "dropdown-bottom dropdown-end")
+                              ? "dropdown-left dropdown-end"
+                              : "dropdown-left dropdown-end")
                           }
                         >
                           <summary
@@ -860,7 +861,7 @@ function Project({ projectId }) {
                               </g>
                             </svg>
                           </summary>
-                          <ul className="menu dropdown-content z-[1] bg-white border-2 rounded-box w-52">
+                          <ul className="menu dropdown-content z-[99] bg-white border-2 rounded-box w-52">
                             <li className="hover:bg-slate-200 rounded-lg">
                               <button
                                 className="font-semibold"
