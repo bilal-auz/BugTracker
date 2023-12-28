@@ -146,26 +146,27 @@ function Overview() {
   return (
     <div className="bg-[#f6f8fa] h-full px-8">
       <div className="flex flex-col items-start mt-5 rounded bg-[#f6f8fa]">
-        <div className="mb-2">
-          <div className="flex items-start">
+        <div className="flex flex-row justify-between mb-2 w-full">
+          <div className="flex flex-row justify-between items-start">
             <p className="text-s_black text-base font-extrabold">
-              HI {userInfo?.name},
+              Hi {userInfo?.name.split(" ")[0]},
             </p>
           </div>
-          {/* <svg
-            className="w-24"
-            clip-rule="evenodd"
-            fill-rule="evenodd"
-            stroke-linejoin="round"
-            stroke-miterlimit="2"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="m10.5 17.25c0-.414.336-.75.75-.75h10c.414 0 .75.336.75.75s-.336.75-.75.75h-10c-.414 0-.75-.336-.75-.75zm-1.5-3.55c0-.53-.47-1-1-1h-5c-.53 0-1 .47-1 1v4.3c0 .53.47 1 1 1h5c.53 0 1-.47 1-1zm-5.5.5h4v3.3h-4zm7-2.2c0-.414.336-.75.75-.75h10c.414 0 .75.336.75.75s-.336.75-.75.75h-10c-.414 0-.75-.336-.75-.75zm-1.5-6c0-.53-.47-1-1-1h-5c-.53 0-1 .47-1 1v4.3c0 .53.47 1 1 1h5c.53 0 1-.47 1-1zm-5.5.5h4v3.3h-4zm7 .25c0-.414.336-.75.75-.75h10c.414 0 .75.336.75.75s-.336.75-.75.75h-10c-.414 0-.75-.336-.75-.75z"
-              fill-rule="nonzero"
-            />
-          </svg> */}
+          <div className="flex flex-row items-center">
+            <div className="avatar online mr-2">
+              <div className="w-8 rounded-full">
+                <img src={userInfo?.avatar_url} />
+              </div>
+            </div>
+            <div className="text-left">
+              <p className="text-[#000] text-sm font-bold">{userInfo?.name}</p>
+              <p className="text-[#00000070] text-sm font-semibold">
+                <a href={userInfo?.html_url} target="_blank">
+                  {userInfo?.login}
+                </a>
+              </p>
+            </div>
+          </div>
         </div>
         <div className="flex flex-col justify-center items-start">
           <p className="text-3xl font-bold text-s_black">All Projects</p>
