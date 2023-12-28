@@ -215,16 +215,20 @@ function Overview() {
               }
               onClick={() => document.getElementById("addProject").showModal()}
             >
-              <svg
-                className="w-4"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <path d="M24 9h-9v-9h-6v9h-9v6h9v9h6v-9h9z" fill="#FFF" />
-              </svg>
-              Add Project
+              {!isLoading && (
+                <>
+                  <svg
+                    className="w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M24 9h-9v-9h-6v9h-9v6h9v9h6v-9h9z" fill="#FFF" />
+                  </svg>
+                  Add Project
+                </>
+              )}
             </button>
             {!isLoading && (
               <dialog id="addProject" className="modal">
@@ -310,9 +314,15 @@ function Overview() {
                     <th className="w-[50px]">Delete</th>
                   </tr>
                 </thead>
-                <tbody className="">
-                  {!isLoading &&
-                    filteredProjects.map((project, index) => (
+                {isLoading ? (
+                  <tr>
+                    <td colSpan="8" className="text-center">
+                      <span className="loading loading-spinner text-neutral"></span>
+                    </td>
+                  </tr>
+                ) : (
+                  <tbody className="">
+                    {filteredProjects.map((project, index) => (
                       <tr className="text-base text-s_black border-gray-200 hover:bg-[#f6f8fa] cursor-pointer">
                         <th>{index + 1}</th>
                         <td id={project._id} className="flex relative w-full">
@@ -469,7 +479,8 @@ function Overview() {
                         </td>
                       </tr>
                     ))}
-                </tbody>
+                  </tbody>
+                )}
               </table>
             </div>
           </div>

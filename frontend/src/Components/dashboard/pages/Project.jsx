@@ -736,25 +736,31 @@ function Project({ projectId }) {
             </select>
           </label>
         </div>
-        {!isLoading && (
-          <div className="w-full">
-            <div className="overflow-x-auto overflow-y-hidden">
-              <table className="table">
-                {/* head */}
-                <thead className="">
-                  <tr className="text-xs text-gray-400 border-gray-200">
-                    <th>#</th>
-                    <th>Ticket title</th>
-                    <th>Ticket desc</th>
-                    <th>Label</th>
-                    <th>Priority</th>
-                    <th>Status</th>
-                    <th>Created at</th>
-                    <th></th>
-                  </tr>
-                </thead>
+
+        <div className="w-full">
+          <div className="overflow-x-auto overflow-y-hidden">
+            <table className="table">
+              {/* head */}
+              <thead className="">
+                <tr className="text-xs text-gray-400 border-gray-200">
+                  <th>#</th>
+                  <th>Ticket title</th>
+                  <th>Ticket desc</th>
+                  <th>Label</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                  <th>Created at</th>
+                  <th></th>
+                </tr>
+              </thead>
+              {isLoading ? (
+                <tr>
+                  <td colSpan="8" className="text-center">
+                    <span className="loading loading-spinner text-neutral"></span>
+                  </td>
+                </tr>
+              ) : (
                 <tbody className="">
-                  {/* row 1 */}
                   {filteredTickets?.map((ticket, index) => (
                     <tr
                       className={
@@ -905,10 +911,10 @@ function Project({ projectId }) {
                     </tr>
                   ))}
                 </tbody>
-              </table>
-            </div>
+              )}
+            </table>
           </div>
-        )}
+        </div>
       </div>
       <p className="text-transparent cursor-default select-none">trs</p>
     </div>
