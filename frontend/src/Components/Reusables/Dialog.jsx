@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { updateTicket } from "../../services/TicketServices";
 
-function Dialog({ ticket, project, setproject, setFilteredTickets }) {
-  const [newTicketName, setNewTicketName] = useState(ticket.title);
-  const [description, setDescription] = useState(ticket.description);
-  const [SelectedLabel, setSelectedLabel] = useState(ticket.label);
-  const [SelectedCritical, setSelectedCritical] = useState(ticket.priority);
-  const [SelectedStatus, setSelectedStatus] = useState(ticket.status);
+function Dialog({ ticket, project, setproject, setFilteredTickets, key }) {
+  const [newTicketName, setNewTicketName] = useState("");
+  const [description, setDescription] = useState("");
+  const [SelectedLabel, setSelectedLabel] = useState("");
+  const [SelectedCritical, setSelectedCritical] = useState("");
+  const [SelectedStatus, setSelectedStatus] = useState("");
 
   const editTicket = async (e) => {
     const newTicket = {
@@ -31,11 +31,27 @@ function Dialog({ ticket, project, setproject, setFilteredTickets }) {
 
     updateTicket(ticket._id, newTicket);
 
-    document.getElementById("cancelBtnTicket").click();
+    document.getElementById("cancelBtnTicket" + ticket._id).click();
   };
 
+  useEffect(() => {
+    setNewTicketName(ticket.title);
+    setDescription(ticket.description);
+    setSelectedLabel(ticket.label);
+    setSelectedCritical(ticket.priority);
+    setSelectedStatus(ticket.status);
+
+    return () => {
+      setNewTicketName("");
+      setDescription("");
+      setSelectedLabel("");
+      setSelectedCritical("");
+      setSelectedStatus("");
+    };
+  }, []);
+
   return (
-    <dialog id={"editTicket" + ticket._id} className="modal">
+    <dialog key={key} id={"editTicket" + ticket._id} className="modal">
       <div className="modal-box flex flex-col justify-center items-center rounded-xl bg-[#FFF] border-2 ">
         <div className="flex flex-row justify-between items-center w-full">
           <h2 className="text-2xl text-left w-full text-s_black font-bold">
@@ -139,7 +155,7 @@ function Dialog({ ticket, project, setproject, setFilteredTickets }) {
         <div className="flex">
           <form method="dialog" className="mr-5">
             <button
-              id="cancelBtnTicket"
+              id={"cancelBtnTicket" + ticket._id}
               className="btn w-20 bg-[#d6dade] text-gray-600 border-gray-300 border-2 hover:scale-105 hover:bg-[#d6dade]"
             >
               Cancel

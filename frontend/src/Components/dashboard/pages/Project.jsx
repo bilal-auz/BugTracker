@@ -896,6 +896,7 @@ function Project({ projectId }) {
                         </details>
                       </td>
                       <Dialog
+                        key={ticket._id}
                         ticket={ticket}
                         setproject={setproject}
                         setFilteredTickets={setFilteredTickets}
