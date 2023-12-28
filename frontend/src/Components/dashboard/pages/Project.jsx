@@ -228,6 +228,7 @@ function Project({ projectId }) {
     setSelectedLabel("");
     setSelectedCritical(false);
     setNewTicketName("");
+    setDescription("");
 
     document.getElementById("closeNewTicketForm").click();
   };
