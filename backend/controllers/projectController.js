@@ -11,7 +11,9 @@ const getProjects = async (req, res) => {
     const decoded = jwt.verify(access_token, process.env.JWT_SECRET);
 
     //get projects from database
-    const projects = await Project.find({ owner_github_id: decoded.userId });
+    const projects = await Project.find({
+      owner_github_id: decoded.userId,
+    }).populate("tickets", "label");
 
     res.status(200).send(projects);
   } catch (error) {

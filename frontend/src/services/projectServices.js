@@ -15,6 +15,24 @@ export const fetchProjects = async () => {
     config
   );
 
+  //calculate number of bugs and features
+  let bugs = 0;
+  let features = 0;
+  data.forEach((project) => {
+    project.tickets.forEach((ticket) => {
+      if (ticket.label === "bug") {
+        bugs++;
+      } else if (ticket.label === "feature") {
+        features++;
+      }
+    });
+
+    project.bugs = bugs;
+    project.features = features;
+    bugs = 0;
+    features = 0;
+  });
+
   return data;
 };
 
