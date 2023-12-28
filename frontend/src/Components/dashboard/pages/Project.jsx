@@ -254,10 +254,15 @@ function Project({ projectId }) {
 
   useEffect(() => {
     loadProject();
+    window.addEventListener("click", (e) => {
+      document.querySelectorAll(".dropdown").forEach((el) => {
+        if (!el.contains(e.target)) el.open = false;
+      });
+    });
   }, []);
 
   return (
-    <div className="h-full px-8 py-8 bg-[#f6f8fa] ">
+    <div className="flex flex-col h-full px-8 py-8 bg-[#f6f8fa]">
       <div className="flex flex-row items-end">
         <h3 className="capitalize text-s_black font-bold mr-1">
           {project?.name}
@@ -764,9 +769,9 @@ function Project({ projectId }) {
                       <td>{ticket.label}</td>
                       <td>
                         {ticket.priority ? (
-                          <div className="flex flex-row items-center">
+                          <div className="flex flex-row items-center w-fit text-red-500 font-semibold text-sm bg-red-100 rounded-full px-2">
                             <svg
-                              className="w-4 mr-1"
+                              className="w-2 mr-1"
                               clip-rule="evenodd"
                               fill-rule="evenodd"
                               stroke-linejoin="round"
@@ -785,7 +790,26 @@ function Project({ projectId }) {
                             Critical
                           </div>
                         ) : (
-                          "Mid"
+                          <div className="flex flex-row items-center justify-center w-fit text-green-500 font-semibold text-sm bg-green-100 rounded-full px-2">
+                            <svg
+                              className="w-2 mr-1"
+                              clip-rule="evenodd"
+                              fill-rule="evenodd"
+                              stroke-linejoin="round"
+                              stroke-miterlimit="2"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <circle
+                                fill="#22c55e"
+                                cx="11.998"
+                                cy="11.998"
+                                fill-rule="nonzero"
+                                r="9.998"
+                              />
+                            </svg>
+                            Safe
+                          </div>
                         )}
                       </td>
                       <td>{ticket.status}</td>
@@ -796,8 +820,15 @@ function Project({ projectId }) {
                         )}
                       </td>
                       <td>
-                        <div className="dropdown dropdown-bottom dropdown-end">
-                          <div
+                        <details
+                          className={
+                            "dropdown " +
+                            (index == filteredTickets.length - 1
+                              ? "dropdown-top dropdown-end"
+                              : "dropdown-bottom dropdown-end")
+                          }
+                        >
+                          <summary
                             tabIndex={0}
                             role="button"
                             className="btn p-0 py-0 bg-transparent border-none hover:bg-transparent"
@@ -817,33 +848,52 @@ function Project({ projectId }) {
                                 stroke-linejoin="round"
                               ></g>
                               <g id="SVGRepo_iconCarrier">
-                                {" "}
                                 <g>
-                                  {" "}
-                                  <path d="M3.968,12.061C1.775,12.061,0,13.835,0,16.027c0,2.192,1.773,3.967,3.968,3.967c2.189,0,3.966-1.772,3.966-3.967 C7.934,13.835,6.157,12.061,3.968,12.061z M16.233,12.061c-2.188,0-3.968,1.773-3.968,3.965c0,2.192,1.778,3.967,3.968,3.967 s3.97-1.772,3.97-3.967C20.201,13.835,18.423,12.061,16.233,12.061z M28.09,12.061c-2.192,0-3.969,1.774-3.969,3.967 c0,2.19,1.774,3.965,3.969,3.965c2.188,0,3.965-1.772,3.965-3.965S30.278,12.061,28.09,12.061z"></path>{" "}
-                                </g>{" "}
+                                  <path d="M3.968,12.061C1.775,12.061,0,13.835,0,16.027c0,2.192,1.773,3.967,3.968,3.967c2.189,0,3.966-1.772,3.966-3.967 C7.934,13.835,6.157,12.061,3.968,12.061z M16.233,12.061c-2.188,0-3.968,1.773-3.968,3.965c0,2.192,1.778,3.967,3.968,3.967 s3.97-1.772,3.97-3.967C20.201,13.835,18.423,12.061,16.233,12.061z M28.09,12.061c-2.192,0-3.969,1.774-3.969,3.967 c0,2.19,1.774,3.965,3.969,3.965c2.188,0,3.965-1.772,3.965-3.965S30.278,12.061,28.09,12.061z"></path>
+                                </g>
                               </g>
                             </svg>
-                          </div>
+                          </summary>
                           <ul className="menu dropdown-content z-[1] bg-white border-2 rounded-box w-52">
-                            <li>
+                            <li className="hover:bg-slate-200 rounded-lg">
                               <button
+                                className="font-semibold"
                                 onClick={() => {
                                   document
                                     .getElementById("editTicket" + ticket._id)
                                     .showModal();
                                 }}
                               >
-                                Edit
+                                <svg
+                                  width="24"
+                                  height="24"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="m11.239 15.533c-1.045 3.004-1.238 3.451-1.238 3.84 0 .441.385.627.627.627.272 0 1.108-.301 3.829-1.249zm.888-.888 3.22 3.22 6.408-6.401c.163-.163.245-.376.245-.591 0-.213-.082-.427-.245-.591-.58-.579-1.458-1.457-2.039-2.036-.163-.163-.377-.245-.591-.245-.213 0-.428.082-.592.245zm-3.127-.895c0-.402-.356-.75-.75-.75-2.561 0-2.939 0-5.5 0-.394 0-.75.348-.75.75s.356.75.75.75h5.5c.394 0 .75-.348.75-.75zm5-3c0-.402-.356-.75-.75-.75-2.561 0-7.939 0-10.5 0-.394 0-.75.348-.75.75s.356.75.75.75h10.5c.394 0 .75-.348.75-.75zm0-3c0-.402-.356-.75-.75-.75-2.561 0-7.939 0-10.5 0-.394 0-.75.348-.75.75s.356.75.75.75h10.5c.394 0 .75-.348.75-.75zm0-3c0-.402-.356-.75-.75-.75-2.561 0-7.939 0-10.5 0-.394 0-.75.348-.75.75s.356.75.75.75h10.5c.394 0 .75-.348.75-.75z"
+                                    fill-rule="nonzero"
+                                  />
+                                </svg>
+                                <p>Edit</p>
                               </button>
                             </li>
-                            <li>
-                              <button onClick={(e) => removeTicket(ticket._id)}>
-                                Delete
+                            <li className="hover:bg-slate-200 rounded-lg">
+                              <button
+                                className="font-semibold"
+                                onClick={(e) => removeTicket(ticket._id)}
+                              >
+                                <svg
+                                  width="24"
+                                  height="24"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path d="M19 24h-14c-1.104 0-2-.896-2-2v-16h18v16c0 1.104-.896 2-2 2m-9-14c0-.552-.448-1-1-1s-1 .448-1 1v9c0 .552.448 1 1 1s1-.448 1-1v-9zm6 0c0-.552-.448-1-1-1s-1 .448-1 1v9c0 .552.448 1 1 1s1-.448 1-1v-9zm6-5h-20v-2h6v-1.5c0-.827.673-1.5 1.5-1.5h5c.825 0 1.5.671 1.5 1.5v1.5h6v2zm-12-2h4v-1h-4v1z" />
+                                </svg>
+                                <p>Delete</p>
                               </button>
                             </li>
                           </ul>
-                        </div>
+                        </details>
                       </td>
                       <Dialog
                         ticket={ticket}
@@ -859,6 +909,7 @@ function Project({ projectId }) {
           </div>
         )}
       </div>
+      <p className="text-transparent cursor-default select-none">trs</p>
     </div>
   );
 }

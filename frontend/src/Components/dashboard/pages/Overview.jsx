@@ -173,7 +173,7 @@ function Overview() {
         </div>
       </div>
 
-      <div className="bg-[#FFF] px-5 py-2 rounded border-2">
+      <div className="bg-[#FFF] px-5 py-2 rounded border-2 mb-10">
         <div className="flex flex-row justify-between mt-5 mb-3 w-full">
           <div className="w-[70%]">
             <label className="form-control ghost">

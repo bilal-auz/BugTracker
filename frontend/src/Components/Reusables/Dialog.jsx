@@ -9,8 +9,6 @@ function Dialog({ ticket, project, setproject, setFilteredTickets }) {
   const [SelectedStatus, setSelectedStatus] = useState(ticket.status);
 
   const editTicket = async (e) => {
-    console.log(newTicketName, description, SelectedLabel, SelectedCritical);
-
     const newTicket = {
       ...ticket,
       //   _id: ticket._id,
@@ -32,6 +30,8 @@ function Dialog({ ticket, project, setproject, setFilteredTickets }) {
     //update in backend
 
     updateTicket(ticket._id, newTicket);
+
+    document.getElementById("cancelBtnTicket").click();
   };
 
   return (
@@ -139,7 +139,7 @@ function Dialog({ ticket, project, setproject, setFilteredTickets }) {
         <div className="flex">
           <form method="dialog" className="mr-5">
             <button
-              id="cancelBtn"
+              id="cancelBtnTicket"
               className="btn w-20 bg-[#d6dade] text-gray-600 border-gray-300 border-2 hover:scale-105 hover:bg-[#d6dade]"
             >
               Cancel
