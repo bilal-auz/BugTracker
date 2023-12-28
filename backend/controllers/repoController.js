@@ -33,6 +33,7 @@ const getPinnedRepos = async (req, res) => {
   try {
     const access_token = req.headers.authorization.split(" ")[1];
     const decoded = jwt.verify(access_token, process.env.JWT_SECRET);
+    const { username } = req.body;
     const config = {
       headers: {
         Accept: "application/json",
@@ -51,7 +52,7 @@ const getPinnedRepos = async (req, res) => {
       data: {
         query: `
           query GetPinnedRepos {
-            user(login: "bilal-auz") {
+            user(login: "${username}") {
               pinnedItems(first: 6, types: REPOSITORY) {
                 nodes {
                   ... on Repository {
@@ -71,7 +72,8 @@ const getPinnedRepos = async (req, res) => {
           `,
       },
     }).then((result) => {
-      res.status(200).send(result.data.data.user.pinnedItems.nodes);
+      console.log(username);
+      res.status(200).send(result.data.data.user?.pinnedItems?.nodes);
     });
     // const { data } = await axios.post(
     //   "https://gh-pinned-repos-5l2i19um3.vercel.app/?username=bilal-auz",

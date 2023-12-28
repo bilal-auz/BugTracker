@@ -18,7 +18,7 @@ export async function fetchRepos() {
   return data;
 }
 
-export async function fetchPinnedRepos() {
+export async function fetchPinnedRepos(username) {
   const access_token = localStorage.getItem("access_token");
 
   const config = {
@@ -27,10 +27,13 @@ export async function fetchPinnedRepos() {
       authorization: `Bearer ${access_token}`,
     },
   };
+  const body = {
+    username,
+  };
 
   const { data } = await axios.post(
     process.env.REACT_APP_BACKEND_ENDPOINT + "/repos/getPinnedRepos",
-    {},
+    body,
     config
   );
 
