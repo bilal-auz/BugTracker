@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { toast } from "react-toastify";
 import { getAccessToken, redirectToAuthPage } from "../services/OAuthServices";
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
