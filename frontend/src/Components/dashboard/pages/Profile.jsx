@@ -197,7 +197,7 @@ function Profile() {
               <span className="text-xs text-[#00000070]">-top 4-</span>
             </p>
             <div className="flex flex-row justify-between items-stretch flex-wrap w-full">
-              {repos.length > 0 ? (
+              {repos.length < 1 ? (
                 <div className="w-full">
                   <p className="text-base font-bold text-[#0000006e] italic">
                     you don't have any pinned repos...
