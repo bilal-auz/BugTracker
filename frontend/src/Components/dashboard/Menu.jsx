@@ -16,6 +16,13 @@ function Menu({ activeTab, activeProject }) {
 
     setIsLoading(false);
   };
+
+  const handleLogout = async () => {
+    localStorage.removeItem("access_token");
+    localStorage.clear();
+    window.location.href = "/";
+  };
+
   useEffect(() => {
     getProjects();
     console.log("activeTab: ", activeTab);
@@ -205,7 +212,7 @@ function Menu({ activeTab, activeProject }) {
 
         <ul className="menu px-5 w-full">
           <li className="text-s_black">
-            <a className="">
+            <button onClick={handleLogout}>
               <svg
                 className="w-5 h-5"
                 clip-rule="evenodd"
@@ -218,7 +225,7 @@ function Menu({ activeTab, activeProject }) {
                 <path d="M0 2v20h14v-2h-12v-16h12v-2h-14zm18 7.408l2.963 2.592-2.963 2.592v-1.592h-8v-2h8v-1.592zm-2-4.408v4h-8v6h8v4l8-7-8-7z" />
               </svg>
               Logout
-            </a>
+            </button>
           </li>
         </ul>
       </div>
