@@ -22,13 +22,13 @@ const getTickets = async (req, res) => {
 const addTickets = async (req, res) => {
   try {
     const access_token = req.headers.authorization.split(" ")[1];
-    const { title, desc, label, priority, status, projectId } = req.body;
+    const { title, description, label, priority, status, projectId } = req.body;
 
     const decoded = jwt.verify(access_token, process.env.JWT_SECRET);
 
     const newTicket = await Ticket.create({
       title,
-      description: desc,
+      description: description,
       label,
       status,
       priority,
@@ -39,7 +39,7 @@ const addTickets = async (req, res) => {
     if (newTicket) {
       await Project.findByIdAndUpdate(projectId, {
         $push: { tickets: newTicket._id },
-        $inc: { [newTicket.label === "bug" ? "bugs" : "features"]: 1 }, //increment bugs or features when adding a ticket
+        // $inc: { [newTicket.label === "bug" ? "bugs" : "features"]: 1 }, //increment bugs or features when adding a ticket
       });
 
       res.status(201).json({ newTicket });
@@ -63,7 +63,7 @@ const deleteTicket = async (req, res) => {
     if (ticket) {
       await Project.findByIdAndUpdate(ticket.projectId, {
         $pull: { tickets: ticketId },
-        $inc: { [ticket.label === "bug" ? "bugs" : "features"]: -1 }, //decrement bugs or features when deleting a ticket
+        // $inc: { [ticket.label === "bug" ? "bugs" : "features"]: -1 }, //decrement bugs or features when deleting a ticket
       });
 
       res.status(200).send("Ticket Deleted");
