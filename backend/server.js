@@ -1,8 +1,8 @@
 const cors = require("cors");
 
-//set and load .env
-const dotenv = require("dotenv");
-dotenv.config();
+// //set and load .env
+// const dotenv = require("dotenv");
+// dotenv.config();
 
 //connect Database
 const connect_db = require("./config/db");
