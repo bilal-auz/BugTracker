@@ -194,7 +194,7 @@ function Home() {
             </div>
             <div className="flex flex-col justify-end relative h-full">
               <img
-                src="assets/mockups/desktop.svg"
+                src="assets/mockups/desktop-2.svg"
                 className="max-w-sm lg:max-w-lg rounded-lg "
               />
             </div>
@@ -217,7 +217,7 @@ function Home() {
             <div className="w-full max-w-md md:max-w-7xl items-center px-8 py-4 ">
               <img
                 className="rounded-lg"
-                src="assets/mockups/dashboard.png"
+                src="assets/mockups/dashboard-2.png"
                 alt=""
               />
             </div>
@@ -258,7 +258,7 @@ function Home() {
           <div className="flex flex-col justify-end w-[50%] xl:w-[60%]">
             <img
               className="rounded-tl-lg "
-              src="assets/mockups/profile1.png"
+              src="assets/mockups/profile.png"
               alt=""
             />
           </div>

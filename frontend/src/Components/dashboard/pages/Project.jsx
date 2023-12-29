@@ -208,7 +208,7 @@ function Project({ projectId }) {
     setFilteredTickets(project.tickets);
   };
 
-  const addTicket = (e) => {
+  const addTicket = async (e) => {
     if (newTicketName == "") return alert("Please enter a ticket name");
     const newTicket = {
       title: newTicketName,
@@ -219,16 +219,18 @@ function Project({ projectId }) {
       projectId: project._id,
     };
 
-    setproject({ ...project, tickets: [...project.tickets, newTicket] });
-    setFilteredTickets([newTicket, ...project.tickets]);
+    // setproject({ ...project, tickets: [...project.tickets, newTicket] });
+    // setFilteredTickets([newTicket, ...project.tickets]);
 
     // call to backend to add new ticket
-    addNewTicket(newTicket);
+    await addNewTicket(newTicket);
 
     setSelectedLabel("");
     setSelectedCritical(false);
     setNewTicketName("");
     setDescription("");
+
+    loadProject();
 
     document.getElementById("closeNewTicketForm").click();
   };
