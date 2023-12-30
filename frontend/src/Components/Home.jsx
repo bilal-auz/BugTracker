@@ -224,7 +224,7 @@ function Home() {
           </div>
         </div>
 
-        <div className="flex flex-row justify-between pt-3 items-end md:items-center w-[50%] bg-[#121212] w-[80%] max-w-md md:max-w-7xl rounded-lg pl-5 md:pl-14 md:pt-8 mb-5">
+        <div className="flex flex-row justify-between pt-3 items-center w-[50%] bg-[#121212] w-[80%] max-w-md md:max-w-7xl rounded-lg pl-5 md:pl-14 md:pt-8 mb-5">
           <div className="flex flex-col items-start w-[50%] md:w-[30%]">
             <h1 className="text-left text-s_white  md:whitespace-nowrap font-[mona-bold] xl:text-4xl">
               Github Profile Overview
@@ -257,7 +257,7 @@ function Home() {
           </div>
           <div className="flex flex-col justify-end w-[50%] xl:w-[60%]">
             <img
-              className="rounded-tl-lg "
+              className="rounded-l-lg md:rounded-tl-lg md:rounded-l-none"
               src="assets/mockups/profile.png"
               alt=""
             />
