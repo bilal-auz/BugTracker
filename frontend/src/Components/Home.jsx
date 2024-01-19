@@ -28,7 +28,7 @@ function Home() {
     const token = await getAccessToken(code);
     setData(token);
 
-    localStorage.setItem("access_token", token);
+    await localStorage.setItem("access_token", token);
 
     history.push("/dashboard");
   };

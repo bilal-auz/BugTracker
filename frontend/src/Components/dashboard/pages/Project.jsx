@@ -239,9 +239,21 @@ function Project({ projectId }) {
     setIsLoading(true);
     const data = await fetchProject(projectId);
 
+    const sortedTickets = data.tickets.sort((a, b) => {
+      const dateA = new Date(a.createdAt);
+      const dateB = new Date(b.createdAt);
+
+      // Sort by createdAt date in descending order
+      if (dateA < dateB && b.status == "open") return 1;
+      if (dateA > dateB && a.status == "open") return -1;
+
+      // If createdAt dates are equal, prioritize isOpened true tickets
+      return a.status == "open" && b.status == "closed" ? -1 : 1;
+    });
+
     console.log(data);
     setproject(data);
-    setFilteredTickets(data.tickets);
+    setFilteredTickets(sortedTickets);
     setIsLoading(false);
   };
 
@@ -551,7 +563,7 @@ function Project({ projectId }) {
           <label className="form-control ghost">
             <input
               type="text"
-              placeholder="Project name..."
+              placeholder="Ticket name..."
               className="input input-bordered input-ghost text-[#4e565e] placeholder:text-[#4e565e] bg-[#f6f8fa] border-2 border-[#dee3e8] focus:bg-transparent focus:outline-[#0366d6] focus:text-[#4e565e]"
               onChange={handleSearch}
             />

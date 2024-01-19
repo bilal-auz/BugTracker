@@ -37,7 +37,7 @@ function Overview() {
     if (e.target.value == "") return setFilteredProjects(projects);
 
     const filteredProjects = projects.filter((project) =>
-      project.name.includes(e.target.value)
+      project.name.toLowerCase().includes(e.target.value.toLowerCase())
     );
 
     setFilteredProjects(filteredProjects);
@@ -68,8 +68,11 @@ function Overview() {
     // ];
 
     const projects = await fetchProjects();
-    setProjects(projects);
-    setFilteredProjects(projects);
+    const sortedProjects = projects.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+    setProjects(sortedProjects);
+    setFilteredProjects(sortedProjects);
   };
 
   const loadUserInfo = async () => {
@@ -415,7 +418,11 @@ function Overview() {
                           </a>
                         </td>
                         <td className="text-center">
-                          <a href={project.repoLink} className="inline-block">
+                          <a
+                            href={project.repoLink}
+                            target="_blank"
+                            className="inline-block"
+                          >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               viewBox="0 0 24 24"
